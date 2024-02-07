@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import AlbumCover from './components/AlbumCover';
+import SongInfo from './components/SongInfo';
+import Controls from './components/Controls';
 
 function App() {
+  const [title, setTitle] = useState("Hey there!  Play something on Spotify to start");
+  const [img, setImg] = useState( "./assets/pfp.png");
+  const [artist, setArtist] = useState("Play something on Spotify to start");
+
+  const seek = () => {
+
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="player" className="electron-window one">
+      <span className="menu">
+        <i className="fa fa-list"></i>
+      </span>
+      <div className="draggable drag-container"></div>
+      <div className="data-wrapper">
+        <AlbumCover imgSrc={img} />
+        <div className="info-wrapper">
+          <SongInfo artist={artist} title={title} />
+          <input 
+            id="time-range" 
+            className="time-range" 
+            type="range" 
+            value="0" 
+            onChange={seek}
+          />
+          <Controls />
+        </div>
+      </div>
     </div>
   );
 }

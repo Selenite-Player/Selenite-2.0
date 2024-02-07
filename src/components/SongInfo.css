@@ -1,0 +1,33 @@
+.scrollBox {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#title-scroll-box {
+  height: 30px;
+  padding-top: 25px;
+  width: 85%;
+}
+
+#artist-scroll-box {
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.scrollBox span {
+  position: absolute;
+  white-space: nowrap;
+  transform: translateX(0);
+}
+
+.song-title {
+  font-size: 25px;
+  font-weight: bold;
+  color: rgba(35, 43, 43, 1);
+}
+
+.artist {
+  margin-top: 5px;
+  color: #333;
+}
