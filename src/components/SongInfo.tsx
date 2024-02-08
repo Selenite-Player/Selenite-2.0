@@ -1,4 +1,3 @@
-/* import { useEffect, MouseEvent } from 'react'; */
 import { useState } from 'react';
 import './SongInfo.css';
 
