@@ -1,33 +1,80 @@
 import './Controls.css';
+const { ipcRenderer } = window.require('electron');
 
-const Controls = (): JSX.Element => {
+type ControlsProps = {
+  repeatState: string,
+  shuffleState: boolean,
+  isPlaying: boolean
+}
+
+const Controls = ({ repeatState, shuffleState, isPlaying}: ControlsProps): JSX.Element => {
+  const repeatOptions = ["off", "track", "context"];
+
   const play = () => {
-    console.log('')
+    const message = isPlaying ? "pause" : "play";
+    ipcRenderer.send(message);
   };
 
-  const prev = () => {
-    console.log('')
+  const previous = () => {
+    ipcRenderer.send('previous-song');
   };
 
   const next = () => {
-    console.log('')
+    ipcRenderer.send('next-song');
   };
 
   const shuffle = () => {
-    console.log('')
+    ipcRenderer.send('shuffle', !shuffleState);
   };
 
   const repeat = () => {
-    console.log('')
+    const optionId = repeatOptions.indexOf(repeatState);
+    const newId = optionId >= repeatOptions.length ? 0 : optionId + 1;
+    ipcRenderer.send('repeat', repeatOptions[newId]);
+  };
+
+  const getRepeatClassName = () => {
+    switch(repeatState){
+      case 'track':
+        return 'fa fa-repeat active'
+      case 'context':
+        return 'fa fa-refresh active'
+      case 'off':
+        return 'fa fa-repeat'
+    }
   };
   
   return  (
     <div className="controls">
-      <i id="shuffle" className="fa fa-random" onClick={shuffle} ></i>
-      <i id="prev" className="fa fa-step-backward" onClick={prev} ></i>
-      <i id="play" className="fa fa-play" onClick={play} ></i>
-      <i id="next" className="fa fa-step-forward" onClick={next} ></i>
-      <i id="repeat" className="fa fa-refresh" onClick={repeat} ></i>
+      <i 
+        id="shuffle" 
+        aria-label="shuffle" 
+        className={"fa fa-random" + shuffleState && " active" } 
+        onClick={shuffle} >
+      </i>
+      <i id="previous" 
+        aria-label="previous"
+        className="fa fa-step-backward" 
+        onClick={previous} >
+      </i>
+      <i 
+        id="play" 
+        aria-label="play"
+        className={`fa ${isPlaying ? "fa-pause" : "fa-play"}`} 
+        onClick={play} >
+      </i>
+      <i 
+        id="next" 
+        aria-label="next"
+        className="fa fa-step-forward" 
+        onClick={next} >
+      </i>
+      <i 
+        id="repeat" 
+        aria-label="repeat"
+        className={getRepeatClassName()} 
+        onClick={repeat} >
+      </i>
     </div>
   );
 };
