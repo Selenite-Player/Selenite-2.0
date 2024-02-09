@@ -45,11 +45,11 @@ const Controls = ({ repeatState, shuffleState, isPlaying}: ControlsProps): JSX.E
   };
   
   return  (
-    <div className="controls">
+    <div id="controls">
       <i 
         id="shuffle" 
         aria-label="shuffle" 
-        className={"fa fa-random" + shuffleState && " active" } 
+        className={`fa fa-random ${shuffleState ? "active" : ""}` } 
         onClick={shuffle} >
       </i>
       <i id="previous" 

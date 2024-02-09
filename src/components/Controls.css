@@ -1,0 +1,24 @@
+#controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#controls .active {
+  color: rgba(47, 67, 83, 0.7);
+}
+
+#controls .active:hover {
+  color: rgba(47, 67, 83, 1);
+}
+
+.fa-play,
+.fa-pause {
+  font-size: 2em;
+}
+
+.fa-step-backward,
+.fa-step-forward {
+  font-size: 1.3em;
+}

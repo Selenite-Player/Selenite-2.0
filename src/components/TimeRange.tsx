@@ -1,3 +1,4 @@
+import './TimeRange.css';
 const { ipcRenderer } = window.require('electron');
 
 type TimeRangeProps = {
