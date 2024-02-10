@@ -8,6 +8,7 @@ function createMainWindow() {
     height: 150,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
     },
     transparent: true,
     frame: false,
