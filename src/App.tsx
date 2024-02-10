@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import AlbumCover from './components/AlbumCover';
 import SongInfo from './components/SongInfo';
 import TimeRange from './components/TimeRange';
 import Controls from './components/Controls';
+const { ipcRenderer } = window.require('electron');
 
 function App() {
   const [title, setTitle] = useState("Hey there!");
@@ -15,6 +16,11 @@ function App() {
   const [repeatState, setRepeatState] = useState("off");
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(100);
+
+  useEffect(() => {
+    /* setInterval(() => ipcRenderer.send("update-info"), 1000); */
+    ipcRenderer.send("update-song-info");
+  }, []);
 
   return (
     <div id="player" className="electron-window one">
