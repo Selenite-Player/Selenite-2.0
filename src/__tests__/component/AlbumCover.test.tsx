@@ -20,9 +20,16 @@ test('Shows album cover image', () => {
   expect(el.getAttribute('src')).toBe(imgSrc);
 });
 
-test('Sends event message when heart icon is clicked', async () => {
+test('Clicking heart icon sends remove-song event if song is in collection', async () => {
   const user = userEvent.setup();
   render(<AlbumCover imgSrc={imgSrc} isSaved={true} />);
+  await user.click(screen.getByLabelText('save-song'));
+  expect(ipcRenderer.send).toBeCalledWith('remove-song');
+});
+
+test('Clicking heart icon sends save-song event if song is not in collection', async () => {
+  const user = userEvent.setup();
+  render(<AlbumCover imgSrc={imgSrc} isSaved={false} />);
   await user.click(screen.getByLabelText('save-song'));
   expect(ipcRenderer.send).toBeCalledWith('save-song');
 });

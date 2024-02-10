@@ -3,7 +3,8 @@ const { ipcRenderer } = window.require('electron');
 
 const AlbumCover = ({ imgSrc, isSaved }: {imgSrc: string, isSaved: boolean | null}): JSX.Element => {
   const saveSong = () => {
-    ipcRenderer.send('save-song');
+    const message = isSaved ? "remove-song" : "save-song";
+    ipcRenderer.send(message);
   };
 
   return (
