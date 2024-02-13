@@ -1,4 +1,69 @@
 import crypto, { webcrypto } from 'crypto';
+import http from 'http';
+
+require('dotenv').config();
+
+const PORT = "8888";
+const REDIRECT_URI = `http://localhost:${PORT}/spotify`;
+
+const scope = [
+  "user-modify-playback-state",
+  "user-read-playback-state",
+  "user-library-read",
+  "user-library-modify",
+];
+const codeVerifier = generateCodeVerifier(64);
+const codeChallenge = generateCodeChallenge(codeVerifier);
+let clientId = process.env.CLIENT_ID!;
+
+http.createServer((req, res) => {
+  const url = new URL(req.url!, `http://${req.headers.host}`);
+
+  if(url.pathname === '/callback'){
+    handleSpotifyResponse(url);
+  };
+}).listen(PORT);
+
+function handleSpotifyResponse(url: URL) {
+  const error = url.searchParams.get('error');
+
+  if(error) {
+    return console.log(error);
+  };
+
+  const code = url.searchParams.get('code');
+
+  if(code){
+    getToken(code);
+  };
+};
+
+async function getToken(code: string): Promise<{
+  accessToken: any;
+  refreshToken: any;
+}> {
+  const payload = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      client_id: clientId,
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: REDIRECT_URI,
+      code_verifier: codeVerifier,
+    }),
+  };
+
+  const body = await fetch("https://accounts.spotify.com/api/token", payload);
+  const response = await body.json();
+
+  return {
+    accessToken: response.access_token,
+    refreshToken: response.refresh_token
+  };
+};
 
 function generateCodeVerifier(length: number): string {
   const possibleValues = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -31,15 +96,8 @@ function _base64encode(input: Buffer) {
     .replace(/\//g, '_');
 };
 
-function generateAuthUrl(clientId: string, codeChallenge: string, redirectUri: string): string {
+function generateAuthUrl(): string {
   const AUTH_URL = new URL("https://accounts.spotify.com/authorize");
-  
-  const scope = [
-    "user-modify-playback-state",
-    "user-read-playback-state",
-    "user-library-read",
-    "user-library-modify",
-  ];
   
   const params =  {
     response_type: 'code',
@@ -47,7 +105,7 @@ function generateAuthUrl(clientId: string, codeChallenge: string, redirectUri: s
     scope: scope.join(','),
     code_challenge_method: 'S256',
     code_challenge: codeChallenge,
-    redirect_uri: redirectUri,
+    redirect_uri: REDIRECT_URI,
   };
 
   AUTH_URL.search = new URLSearchParams(params).toString();
