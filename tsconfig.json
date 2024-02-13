@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "esnext",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "module": "commonjs",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -13,14 +14,21 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "outDir": "./dist",
   },
   "include": [
-    "src"
-  ]
+    "src",
+    "./main.ts"
+  ],
+  "exclude": [
+    "src/__tests__",
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts",
+  ],
 }

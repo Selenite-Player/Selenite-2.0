@@ -22,11 +22,10 @@
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "electron": "electron main.js",
-    "electron:dev": "NODE_ENV=development electron main.js"
+    "start:electron": "npm run build:electron && electron ./dist/main.js",
+    "build:react": "react-scripts build",
+    "build:electron": "tsc",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "dotenv": "^16.4.4",
     "electron": "^28.2.1",
     "electron-reload": "^2.0.0-alpha.1"
   }
