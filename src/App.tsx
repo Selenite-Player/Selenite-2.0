@@ -19,8 +19,12 @@ function App() {
 
   useEffect(() => {
     /* setInterval(() => ipcRenderer.send("update-info"), 1000); */
-    ipcRenderer.send("update-song-info");
+    ipcRenderer.send("get-data");
   }, []);
+
+  ipcRenderer.on("new-data", (e, data) => {
+    console.log(data);
+  });
 
   return (
     <div id="player" className="electron-window one">
@@ -41,6 +45,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

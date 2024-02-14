@@ -23,5 +23,5 @@ test('Requests song data on first render', () => {
   render(<App />);
   
   expect(ipcRenderer.send).toHaveBeenCalledTimes(1);
-  expect(ipcRenderer.send).toBeCalledWith("update-song-info");
+  expect(ipcRenderer.send).toBeCalledWith("get-data");
 });
