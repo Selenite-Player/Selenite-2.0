@@ -36,11 +36,11 @@ class SpotifyAuth {
   authenticate(): void {
     this.window.loadURL(this.generateAuthUrl());
 
-    http.createServer((req, res) => {
+    http.createServer(async (req, res) => {
       const url = new URL(req.url!, `http://${req.headers.host}`);
     
       if(url.pathname === '/spotify'){
-        this.handleSpotifyResponse(url);
+        await this.handleSpotifyResponse(url);
       };
     }).listen(PORT);
   };
