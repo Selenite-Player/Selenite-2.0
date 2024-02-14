@@ -13,6 +13,7 @@
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.18",
     "crypto": "^1.0.1",
+    "electron-settings": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",

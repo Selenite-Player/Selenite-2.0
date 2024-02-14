@@ -1,5 +1,6 @@
 import crypto, { webcrypto } from 'crypto';
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, dialog } from 'electron';
+import settings from "electron-settings";
 import http from 'http';
 
 require('dotenv').config();
@@ -67,6 +68,7 @@ class SpotifyAuth {
   
     if(error) {
       this.window.close();
+      dialog.showErrorBox(`Error: ${error}`, "Please restart the app and try again");
       return console.log(error);
     };
   
@@ -78,10 +80,7 @@ class SpotifyAuth {
     };
   };
   
-  async getToken(code: string): Promise<{
-    accessToken: any;
-    refreshToken: any;
-  }> {
+  async getToken(code: string): Promise<void> {
     const payload = {
       method: 'POST',
       headers: {
@@ -98,11 +97,13 @@ class SpotifyAuth {
   
     const body = await fetch("https://accounts.spotify.com/api/token", payload);
     const response = await body.json();
-  
-    return {
-      accessToken: response.access_token,
-      refreshToken: response.refresh_token
-    };
+
+    settings.setSync({
+      token: {
+        access: response.access_token,
+        refresh: response.refresh_token
+      }
+    });
   };
 
   generateCodeVerifier(length: number): string {

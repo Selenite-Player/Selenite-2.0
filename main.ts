@@ -1,4 +1,8 @@
 import { app, BrowserWindow } from "electron";
+import SpotifyAuth from "./src/api/spotify-auth";
+import settings from "electron-settings";
+
+settings.configure({ fileName: "selenite-settings.json", prettify: true });
 
 let mainWindow;
 
@@ -22,4 +26,10 @@ function createMainWindow() {
 
 app.whenReady().then(() => {
   createMainWindow();
+
+  if(!settings.getSync('token.access')){
+    const authWindow = new BrowserWindow();
+    const spotyAuth = new SpotifyAuth(authWindow);
+    spotyAuth.authenticate();
+  };
 });
