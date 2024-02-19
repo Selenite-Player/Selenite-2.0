@@ -34,6 +34,7 @@ a:hover {
   position: absolute;
   right: 0;
   z-index: 1;
+  -webkit-app-region: drag;
 }
 
 .box-shadow-3d {
