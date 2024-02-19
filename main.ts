@@ -26,17 +26,25 @@ function createMainWindow() {
 };
 
 app.whenReady().then(async () => {
+  const spotyAuth = new SpotifyAuth();
+
   if(!settings.getSync('token.access')){
     const authWindow = new BrowserWindow();
-    const spotyAuth = new SpotifyAuth(authWindow);
-    spotyAuth.authenticate();
-    authWindow.on('close', () => { createMainWindow(); });
+    spotyAuth.authenticate(authWindow);
+    authWindow.on('close', () => { startApp(spotyAuth); });
   } else {
-    createMainWindow();
+    startApp(spotyAuth);
   };
 });
 
+function startApp(auth: SpotifyAuth) {
+  createMainWindow();
+  setInterval(auth.getRefreshToken, 60 * 59 * 1000);
+};
+
 ipcMain.on('get-data', async (event) => {
   const data = await spotify.getPlayback();
-  event.reply('new-data', data);
+  if(data){
+    event.reply('new-data', data);
+  };
 });

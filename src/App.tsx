@@ -18,13 +18,18 @@ function App() {
   const [duration, setDuration] = useState(100);
 
   useEffect(() => {
-    /* setInterval(() => ipcRenderer.send("update-info"), 1000); */
-    ipcRenderer.send("get-data");
+    setInterval(() => ipcRenderer.send("get-data"), 1000);
+    ipcRenderer.on("new-data", (e, data) => {
+      setTitle(data.title);
+      setImg(data.img);
+      setArtist(data.artist.join(","));
+      setIsPlaying(data.isPlaying);
+      setShuffleState(data.shuffleState);
+      setRepeatState(data.repeatState);
+      setProgress(data.progress);
+      setDuration(data.duration);
+    });
   }, []);
-
-  ipcRenderer.on("new-data", (e, data) => {
-    console.log(data);
-  });
 
   return (
     <div id="player" className="electron-window one">

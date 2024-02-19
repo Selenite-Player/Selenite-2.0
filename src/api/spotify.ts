@@ -17,7 +17,17 @@ const getPlayback = async () => {
     return console.log(data.error.status, data.error.message);
   };
   
-  return data;
+  return {
+    title: data.item.name,
+    artist: data.item.artists.map((artist: any) => artist.name),
+    img: data.item.album.images[0].url,
+    /* isSaved: , */
+    isPlaying: data.is_playing,
+    shuffleState: data.shuffle_state,
+    repeatState: data.repeat_state,
+    progress: data.progress_ms,
+    duration: data.item.duration_ms,
+  };
 };
 
 const spotify = { getPlayback };

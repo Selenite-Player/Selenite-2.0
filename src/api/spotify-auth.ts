@@ -21,26 +21,24 @@ class SpotifyAuth {
   codeVerifier: string;
   codeChallenge: string;
   clientId: string;
-  window: BrowserWindow;
 
-  constructor(window: BrowserWindow){
+  constructor(){
     this.port = PORT;
     this.redirectUri = REDIRECT_URI;
     this.scope = scope;
     this.codeVerifier = this.generateCodeVerifier(64);
     this.codeChallenge = this.generateCodeChallenge(this.codeVerifier);
     this.clientId = process.env.CLIENT_ID!;
-    this.window = window;
   };
 
-  authenticate(): void {
-    this.window.loadURL(this.generateAuthUrl());
+  authenticate(window: BrowserWindow): void {
+    window.loadURL(this.generateAuthUrl());
 
     http.createServer(async (req, res) => {
       const url = new URL(req.url!, `http://${req.headers.host}`);
     
       if(url.pathname === '/spotify'){
-        await this.handleSpotifyResponse(url);
+        await this.handleSpotifyResponse(url, window);
       };
     }).listen(PORT);
   };
@@ -63,11 +61,11 @@ class SpotifyAuth {
     return AUTH_URL.toString();
   };
 
-  async handleSpotifyResponse(url: URL) {
+  private async handleSpotifyResponse(url: URL, window: BrowserWindow) {
     const error = url.searchParams.get('error');
   
     if(error) {
-      this.window.close();
+      window.close();
       dialog.showErrorBox(`Error: ${error}`, "Please restart the app and try again");
       return console.log(error);
     };
@@ -76,7 +74,7 @@ class SpotifyAuth {
   
     if(code){
       await this.getToken(code);
-      this.window.close();
+      window.close();
     };
   };
   
@@ -99,11 +97,34 @@ class SpotifyAuth {
     const response = await body.json();
 
     settings.setSync({
+      ...settings.getSync(),
       token: {
         access: response.access_token,
         refresh: response.refresh_token
       }
     });
+  };
+
+  async getRefreshToken(): Promise<void> {
+    const refreshToken = settings.getSync('refresh_token') as string;
+
+    const payload = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        client_id: this.clientId,
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken
+      })
+    };
+
+    const body = await fetch("https://accounts.spotify.com/api/token", payload);
+    const response = await body.json();
+
+    settings.setSync('token.refresh', response.refresh_token);
+    settings.setSync('token.access', response.access_token);
   };
 
   generateCodeVerifier(length: number): string {
