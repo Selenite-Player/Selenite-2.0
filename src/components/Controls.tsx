@@ -29,7 +29,8 @@ const Controls = ({ repeatState, shuffleState, isPlaying}: ControlsProps): JSX.E
 
   const repeat = () => {
     const optionId = repeatOptions.indexOf(repeatState);
-    const newId = optionId >= repeatOptions.length ? 0 : optionId + 1;
+    const newId = (optionId >= repeatOptions.length-1) ? 0 : optionId + 1;
+
     ipcRenderer.send('repeat', repeatOptions[newId]);
   };
 

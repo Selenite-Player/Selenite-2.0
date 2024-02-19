@@ -28,11 +28,12 @@ function createMainWindow() {
 app.whenReady().then(async () => {
   const spotyAuth = new SpotifyAuth();
 
-  if(!settings.getSync('token.access')){
+  if(!settings.getSync('token.refresh')){
     const authWindow = new BrowserWindow();
     spotyAuth.authenticate(authWindow);
     authWindow.on('close', () => { startApp(spotyAuth); });
   } else {
+    await spotyAuth.getRefreshToken();
     startApp(spotyAuth);
   };
 });
@@ -47,4 +48,28 @@ ipcMain.on('get-data', async (event) => {
   if(data){
     event.reply('new-data', data);
   };
+});
+
+ipcMain.on('play', async () => {
+  await spotify.resumePlayback();
+});
+
+ipcMain.on('pause', async () => {
+  await spotify.pausePlayback();
+});
+
+ipcMain.on('next-song', async () => {
+  await spotify.skipToNext();
+});
+
+ipcMain.on('previous-song', async () => {
+  await spotify.skipToPrevious();
+});
+
+ipcMain.on('shuffle', async (e, value) => {
+  await spotify.shuffle(value);
+});
+
+ipcMain.on('repeat', async (e, value) => {
+  await spotify.repeat(value);
 });

@@ -106,7 +106,7 @@ class SpotifyAuth {
   };
 
   async getRefreshToken(): Promise<void> {
-    const refreshToken = settings.getSync('refresh_token') as string;
+    const refreshToken = settings.getSync('token.refresh') as string;
 
     const payload = {
       method: 'POST',
@@ -123,8 +123,13 @@ class SpotifyAuth {
     const body = await fetch("https://accounts.spotify.com/api/token", payload);
     const response = await body.json();
 
-    settings.setSync('token.refresh', response.refresh_token);
-    settings.setSync('token.access', response.access_token);
+    settings.setSync({
+      ...settings.getSync(),
+      token: {
+        access: response.access_token,
+        refresh: response.refresh_token
+      }
+    });
   };
 
   generateCodeVerifier(length: number): string {

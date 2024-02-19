@@ -28,6 +28,7 @@ function App() {
       setRepeatState(data.repeatState);
       setProgress(data.progress);
       setDuration(data.duration);
+      setIsSaved(data.isSaved);
     });
   }, []);
 
@@ -36,7 +37,7 @@ function App() {
       <span className="menu">
         <i className="fa fa-list"></i>
       </span>
-      <div className="draggable drag-container"></div>
+      <div className="drag-container"></div>
       <div className="data-wrapper">
         <AlbumCover imgSrc={img} isSaved={isSaved} />
         <div className="info-wrapper">
