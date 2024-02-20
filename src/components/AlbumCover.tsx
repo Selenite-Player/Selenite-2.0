@@ -1,10 +1,17 @@
 import './AlbumCover.css';
 const { ipcRenderer } = window.require('electron');
 
-const AlbumCover = ({ imgSrc, isSaved }: {imgSrc: string, isSaved: boolean | null}): JSX.Element => {
+type CoverProps = {
+  imgSrc: string, 
+  isSaved: boolean | null,
+  id: string
+};
+
+const AlbumCover = ({ imgSrc, isSaved, id }: CoverProps): JSX.Element => {
   const saveSong = () => {
     const message = isSaved ? "remove-song" : "save-song";
-    ipcRenderer.send(message);
+    console.log(id)
+    ipcRenderer.send(message, id);
   };
 
   return (

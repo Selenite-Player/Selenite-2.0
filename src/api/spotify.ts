@@ -22,6 +22,7 @@ const getPlayback = async () => {
   };
   
   return {
+    id: data.item.id,
     title: data.item.name,
     artist: data.item.artists.map((artist: any) => artist.name),
     img: data.item.album.images[0].url,
@@ -64,6 +65,20 @@ const repeat = async (state: string) => {
   );
 };
 
+const saveSong = async (id: string) => {
+  await fetchWithBearer(
+    `https://api.spotify.com/v1/me/tracks?ids=${id}`
+    , { method: 'PUT' }
+  );
+};
+
+const removeSong = async (id: string) => {
+  await fetchWithBearer(
+    `https://api.spotify.com/v1/me/tracks?ids=${id}`
+    , { method: 'DELETE' }
+  );
+};
+
 const isSaved = async (id: string) => {
   const res = await fetchWithBearer(
     `https://api.spotify.com/v1/me/tracks/contains?ids=${id}`,
@@ -86,6 +101,8 @@ const spotify = {
   skipToPrevious,
   shuffle,
   repeat,
+  saveSong,
+  removeSong,
   isSaved
 };
 
