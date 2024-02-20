@@ -4,14 +4,14 @@ const { ipcRenderer } = window.require('electron');
 type CoverProps = {
   imgSrc: string, 
   isSaved: boolean | null,
-  id: string
+  id: string,
+  playingType: string
 };
 
-const AlbumCover = ({ imgSrc, isSaved, id }: CoverProps): JSX.Element => {
+const AlbumCover = ({ imgSrc, isSaved, id, playingType }: CoverProps): JSX.Element => {
   const saveSong = () => {
-    const message = isSaved ? "remove-song" : "save-song";
-    console.log(id)
-    ipcRenderer.send(message, id);
+    const message = isSaved ? "remove-item" : "save-item";
+    ipcRenderer.send(message, { playingType, id });
   };
 
   return (

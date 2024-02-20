@@ -8,6 +8,7 @@ const { ipcRenderer } = window.require('electron');
 
 function App() {
   const [id, setId] = useState("");
+  const [playingType, setPlayingType] = useState("");
   const [title, setTitle] = useState("Hey there!");
   const [img, setImg] = useState( "./assets/pfp.png");
   const [artist, setArtist] = useState("Play something on Spotify to start");
@@ -23,9 +24,10 @@ function App() {
 
     ipcRenderer.on("new-data", (e, data) => {
       setId(data.id);
+      setPlayingType(data.playingType);
       setTitle(data.title);
       setImg(data.img);
-      setArtist(data.artist.join(", "));
+      setArtist(data.artist);
       setIsPlaying(data.isPlaying);
       setShuffleState(data.shuffleState);
       setRepeatState(data.repeatState);
@@ -42,7 +44,7 @@ function App() {
       </span>
       <div className="drag-container"></div>
       <div className="data-wrapper">
-        <AlbumCover imgSrc={img} isSaved={isSaved} id={id} />
+        <AlbumCover imgSrc={img} isSaved={isSaved} id={id} playingType={playingType} />
         <div className="info-wrapper">
           <SongInfo artist={artist} title={title} />
           <TimeRange progress={progress} duration={duration} />

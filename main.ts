@@ -66,18 +66,20 @@ ipcMain.on('previous-song', async () => {
   await spotify.skipToPrevious();
 });
 
-ipcMain.on('shuffle', async (e, state) => {
+ipcMain.on('shuffle', async (e, state: boolean) => {
   await spotify.shuffle(state);
 });
 
-ipcMain.on('repeat', async (e, state) => {
+ipcMain.on('repeat', async (e, state: string) => {
   await spotify.repeat(state);
 });
 
-ipcMain.on("save-song", async (e, id) => {
-  await spotify.saveSong(id);
+ipcMain.on("save-item", async (e, data: { playingType: string, id: string }) => {
+  const {playingType, id} = data;
+  await spotify.saveItem(playingType, id);
 });
 
-ipcMain.on("remove-song", async (e, id) => {
-  await spotify.removeSong(id);
+ipcMain.on("remove-item", async (e, data: { playingType: string, id: string }) => {
+  const {playingType, id} = data;
+  await spotify.removeItem(playingType, id);
 });

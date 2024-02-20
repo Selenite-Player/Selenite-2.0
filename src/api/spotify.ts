@@ -9,7 +9,7 @@ const fetchWithBearer = (url: string, payload: any) => {
 };
 
 const getPlayback = async () => {
-  const res: any = await fetchWithBearer("https://api.spotify.com/v1/me/player", { method: "GET" });
+  const res: any = await fetchWithBearer("https://api.spotify.com/v1/me/player?additional_types=episode", { method: "GET" });
 
   if(res.status === 204){
     return console.log('Playback not available or inactive');
@@ -20,19 +20,40 @@ const getPlayback = async () => {
   if(data.error){
     return console.log(data.error.status, data.error.message);
   };
-  
-  return {
-    id: data.item.id,
-    title: data.item.name,
-    artist: data.item.artists.map((artist: any) => artist.name),
-    img: data.item.album.images[0].url,
-    isSaved: await isSaved(data.item.id),
-    isPlaying: data.is_playing,
-    shuffleState: data.shuffle_state,
-    repeatState: data.repeat_state,
-    progress: data.progress_ms,
-    duration: data.item.duration_ms,
-  };
+
+  const playingType = data.currently_playing_type;
+
+  if (playingType === "track") {
+    const artists = data.item.artists.map((artist: any) => artist.name);
+
+    return {
+      id: data.item.id,
+      playingType: playingType,
+      title: data.item.name,
+      artist: artists.join(", "),
+      img: data.item.album.images[0].url,
+      isSaved: await isSaved(playingType, data.item.id),
+      isPlaying: data.is_playing,
+      shuffleState: data.shuffle_state,
+      repeatState: data.repeat_state,
+      progress: data.progress_ms,
+      duration: data.item.duration_ms,
+    };
+  } else if (playingType === "episode") {
+      return {
+        id: data.item.id,
+        playingType: playingType,
+        title: data.item.name,
+        artist: data.item.show.name,
+        img: data.item.images[0].url,
+        isSaved: await isSaved(playingType, data.item.id),
+        isPlaying: data.is_playing,
+        shuffleState: data.shuffle_state,
+        repeatState: data.repeat_state,
+        progress: data.progress_ms,
+        duration: data.item.duration_ms,
+      };
+  }
 };
 
 const resumePlayback = async () => {
@@ -65,23 +86,23 @@ const repeat = async (state: string) => {
   );
 };
 
-const saveSong = async (id: string) => {
+const saveItem = async (type: string, id: string) => {
   await fetchWithBearer(
-    `https://api.spotify.com/v1/me/tracks?ids=${id}`
+    `https://api.spotify.com/v1/me/${type}s?ids=${id}`
     , { method: 'PUT' }
   );
 };
 
-const removeSong = async (id: string) => {
+const removeItem = async (type: string, id: string) => {
   await fetchWithBearer(
-    `https://api.spotify.com/v1/me/tracks?ids=${id}`
+    `https://api.spotify.com/v1/me/${type}s?ids=${id}`
     , { method: 'DELETE' }
   );
 };
 
-const isSaved = async (id: string) => {
+const isSaved = async (type: string, id: string) => {
   const res = await fetchWithBearer(
-    `https://api.spotify.com/v1/me/tracks/contains?ids=${id}`,
+    `https://api.spotify.com/v1/me/${type}s/contains?ids=${id}`,
     { method: 'GET' }
   );
 
@@ -101,8 +122,8 @@ const spotify = {
   skipToPrevious,
   shuffle,
   repeat,
-  saveSong,
-  removeSong,
+  saveItem,
+  removeItem,
   isSaved
 };
 
