@@ -1,0 +1,34 @@
+#device-popover {
+  position: absolute;
+  right: 2%;
+  bottom: 28%;
+  background-color: rgb(63, 67, 70);
+  height: 100px;
+  width: 100px;
+  z-index: 100;
+  border-radius: 5px;
+  text-wrap: wrap;
+  overflow: scroll;
+}
+
+#device-popover ul {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+
+#device-popover ul li {
+  font-size: 14px;
+  color: rgba(250, 250, 250, 0.6);
+  padding: 3px;
+}
+
+#device-popover ul li.selected {
+  color: rgba(250, 250, 250, 1);
+  font-weight: bold;
+}
+
+#device-popover ul li:hover {
+  background-color: rgb(79, 84, 87);
+  border-radius: 5px;
+}
