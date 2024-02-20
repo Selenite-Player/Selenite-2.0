@@ -4,10 +4,12 @@ const { ipcRenderer } = window.require('electron');
 type ControlsProps = {
   repeatState: string,
   shuffleState: boolean,
-  isPlaying: boolean
+  isPlaying: boolean,
+  setShowDevices: React.Dispatch<React.SetStateAction<boolean>>,
+  showDevices: boolean
 }
 
-const Controls = ({ repeatState, shuffleState, isPlaying}: ControlsProps): JSX.Element => {
+const Controls = ({ repeatState, shuffleState, isPlaying, setShowDevices, showDevices}: ControlsProps): JSX.Element => {
   const repeatOptions = ["off", "track", "context"];
 
   const play = () => {
@@ -32,6 +34,10 @@ const Controls = ({ repeatState, shuffleState, isPlaying}: ControlsProps): JSX.E
     const newId = (optionId >= repeatOptions.length-1) ? 0 : optionId + 1;
 
     ipcRenderer.send('repeat', repeatOptions[newId]);
+  };
+
+  const showDevicesPopover = () => {
+    setShowDevices(!showDevices);
   };
 
   const getRepeatClassName = () => {
@@ -75,6 +81,12 @@ const Controls = ({ repeatState, shuffleState, isPlaying}: ControlsProps): JSX.E
         aria-label="repeat"
         className={getRepeatClassName()} 
         onClick={repeat} >
+      </i>
+      <i 
+        id="devices" 
+        aria-label="devices"
+        className="fa fa-mobile"
+        onClick={showDevicesPopover} >
       </i>
     </div>
   );

@@ -29,11 +29,47 @@ a:hover {
 
 .drag-container {
   height: 100%;
-  width: 5%;
+  width: 4%;
   position: absolute;
   right: 0;
   z-index: 1;
   -webkit-app-region: drag;
+}
+
+#popover {
+  position: absolute;
+  right: 2%;
+  bottom: 28%;
+  background-color: rgb(63, 67, 70);
+  height: 100px;
+  width: 100px;
+  z-index: 100;
+  border-radius: 5px;
+  text-wrap: wrap;
+  /* padding: 0px 8px; */
+  overflow: scroll;
+}
+
+#popover ul {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+
+#popover ul li {
+  font-size: 14px;
+  color: rgba(250, 250, 250, 0.6);
+  padding: 3px;
+}
+
+#popover ul li.selected {
+  color: rgba(250, 250, 250, 1);
+  font-weight: bold;
+}
+
+#popover ul li:hover {
+  background-color: rgb(79, 84, 87);
+  border-radius: 5px;
 }
 
 .box-shadow-3d {

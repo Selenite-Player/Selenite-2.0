@@ -6,6 +6,44 @@ import TimeRange from './components/TimeRange';
 import Controls from './components/Controls';
 const { ipcRenderer } = window.require('electron');
 
+const Popover = ({show, setShowDevices}: {show: boolean, setShowDevices: React.Dispatch<React.SetStateAction<boolean>>}) => {
+  const [devices, setDevices] = useState<any[]>([]);
+
+  useEffect(() => {
+    ipcRenderer.send('get-devices');
+    ipcRenderer.on('update-devices', (e, data) => {
+      setDevices(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if(show){
+      ipcRenderer.send('get-devices');
+    }
+  }, [show]);
+
+  const changeDevice = (id: string) => {
+    ipcRenderer.send('change-device', id);
+    setShowDevices(false);
+  };
+
+  return (
+    <div id="popover" style={{ display: show ? 'block' : 'none'}}>
+      <ul>
+        { devices.map(device => 
+          <li 
+            className={device.is_active ? 'selected' : ''}
+            key={device.id}
+            onClick={() => changeDevice(device.id)}
+          >
+            {device.name}
+          </li>
+        )}
+      </ul>
+    </div>
+  )
+};
+
 function App() {
   const [id, setId] = useState("");
   const [playingType, setPlayingType] = useState("");
@@ -18,6 +56,7 @@ function App() {
   const [repeatState, setRepeatState] = useState("off");
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(100);
+  const [showDevices, setShowDevices] = useState(false);
 
   useEffect(() => {
     setInterval(() => ipcRenderer.send("get-data"), 1000);
@@ -48,10 +87,13 @@ function App() {
         <div className="info-wrapper">
           <SongInfo artist={artist} title={title} />
           <TimeRange progress={progress} duration={duration} />
+          <Popover show={showDevices} setShowDevices={setShowDevices} />
           <Controls 
             repeatState={repeatState} 
             shuffleState={shuffleState} 
-            isPlaying={isPlaying} />
+            isPlaying={isPlaying}
+            setShowDevices={setShowDevices}
+            showDevices={showDevices} />
         </div>
       </div>
     </div>

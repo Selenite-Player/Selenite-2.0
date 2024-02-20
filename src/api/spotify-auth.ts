@@ -120,16 +120,22 @@ class SpotifyAuth {
       })
     };
 
-    const body = await fetch("https://accounts.spotify.com/api/token", payload);
-    const response = await body.json();
+    const res = await fetch("https://accounts.spotify.com/api/token", payload)
+      .catch((err) => console.error(err));
 
-    settings.setSync({
-      ...settings.getSync(),
-      token: {
-        access: response.access_token,
-        refresh: response.refresh_token
-      }
-    });
+    if(!res) { return };
+
+    if(res.status === 200) {
+      const data = await res.json();
+  
+      settings.setSync({
+        ...settings.getSync(),
+        token: {
+          access: data.access_token,
+          refresh: data.refresh_token
+        }
+      });
+    }
   };
 
   generateCodeVerifier(length: number): string {

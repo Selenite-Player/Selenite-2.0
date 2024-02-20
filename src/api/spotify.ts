@@ -12,7 +12,8 @@ const getPlayback = async () => {
   const res: any = await fetchWithBearer("https://api.spotify.com/v1/me/player?additional_types=episode", { method: "GET" });
 
   if (res.status === 204) {
-    return console.log('Playback not available or inactive');
+    console.log('Playback not available or inactive');
+    return null
   };
 
   const data = await res.json();
@@ -56,8 +57,36 @@ const getPlayback = async () => {
   }
 };
 
+const getDevices = async (): Promise<any[]> => {
+  const res = await fetchWithBearer("https://api.spotify.com/v1/me/player/devices", { method: "GET"})
+  const data = await res!.json()
+  return data.devices;
+};
+
+const transferPlayback = async (id: string) => {
+  const res = await fetchWithBearer(
+    "https://api.spotify.com/v1/me/player",
+    { 
+      method: "PUT",
+      body: JSON.stringify({ device_ids: [id] })
+    }
+  );
+
+  if(res!.status === 200){
+    settings.setSync({
+      ...settings.getSync(),
+      device_id: id
+    });
+  };
+};
+
 const resumePlayback = async () => {
-  await fetchWithBearer("https://api.spotify.com/v1/me/player/play", { method: 'PUT' });
+  const deviceId = settings.getSync('device_id');
+  const url = deviceId 
+    ? `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`
+    : "https://api.spotify.com/v1/me/player/play"
+    
+  await fetchWithBearer(url, { method: 'PUT' });
 };
 
 const pausePlayback = async () => {
@@ -122,7 +151,9 @@ const isSaved = async (type: string, id: string) => {
 };
 
 const spotify = {
+  transferPlayback,
   getPlayback,
+  getDevices,
   resumePlayback,
   pausePlayback,
   skipToNext,

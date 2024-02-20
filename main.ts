@@ -87,3 +87,20 @@ ipcMain.on("remove-item", async (e, data: { playingType: string, id: string }) =
   const {playingType, id} = data;
   await spotify.removeItem(playingType, id);
 });
+
+ipcMain.on("get-devices", async (event) => {
+  const devices = await spotify.getDevices();
+  const activeDevice = devices.find(device => device.is_active);
+
+  if(activeDevice){
+    settings.setSync({
+      ...settings.getSync(),
+      device_id: activeDevice.id
+    });
+  }
+  event.reply('update-devices', devices);
+});
+
+ipcMain.on("change-device", async (e, id: string) => {
+  await spotify.transferPlayback(id);
+});
