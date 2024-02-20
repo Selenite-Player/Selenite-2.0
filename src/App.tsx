@@ -20,6 +20,7 @@ function App() {
 
   useEffect(() => {
     setInterval(() => ipcRenderer.send("get-data"), 1000);
+
     ipcRenderer.on("new-data", (e, data) => {
       setId(data.id);
       setTitle(data.title);

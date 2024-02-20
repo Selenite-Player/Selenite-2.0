@@ -13,7 +13,6 @@ a:hover {
 }
 
 .electron-window {
-  /* background-image: url("./assets/transparent.png"); */
   width: 100%;
   height: 100%;
   border-radius: 5px;
