@@ -22,6 +22,11 @@ function createMainWindow() {
     /* resizable: false, */
   });
 
+  if (settings.getSync("window-position")) {
+    const [x, y] = settings.getSync("window-position") as number[];
+    mainWindow.setPosition(x, y);
+  };
+
   mainWindow.loadURL('http://localhost:3000/index.html');
 };
 
@@ -36,6 +41,17 @@ app.whenReady().then(async () => {
     await spotyAuth.getRefreshToken();
     startApp(spotyAuth);
   };
+});
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
+
+app.on("before-quit", () => {
+  if(!mainWindow){ return; };
+  settings.setSync("window-position", mainWindow.getPosition());
 });
 
 function startApp(auth: SpotifyAuth) {
