@@ -1,4 +1,5 @@
 import './TimeRange.css';
+import { useState, useEffect } from 'react';
 const { ipcRenderer } = window.require('electron');
 
 type TimeRangeProps = {
@@ -7,9 +8,24 @@ type TimeRangeProps = {
 }
 
 const TimeRange = ({progress, duration}: TimeRangeProps) => {
-  const seek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    ipcRenderer.send('seek', e.target.value);
-  }
+  const [value, setValue] = useState(`${progress}`);
+  const [seeking, setSeeking] = useState(false);
+
+  useEffect(() => {
+    if(!seeking) {
+      setValue(`${progress}`);
+    }
+  }, [progress]); // eslint-disable-line
+
+  const seek = () => {
+    ipcRenderer.send('seek', value);
+    setTimeout(() => setSeeking(false), 1000);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSeeking(true);
+    setValue(e.target.value);
+  };
 
   return (
     <input 
@@ -17,9 +33,10 @@ const TimeRange = ({progress, duration}: TimeRangeProps) => {
       aria-label="time-range"
       className="time-range" 
       type="range" 
-      value={progress}
+      value={value}
       max={duration}
-      onChange={(e) => seek(e)}
+      onChange={(e) => handleChange(e)}
+      onMouseUp={seek}
     />
   )
 };

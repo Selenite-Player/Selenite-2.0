@@ -74,6 +74,10 @@ ipcMain.on('repeat', async (e, state: string) => {
   await spotify.repeat(state);
 });
 
+ipcMain.on("seek", async (e, timestamp: string) => {
+  await spotify.seek(timestamp);
+});
+
 ipcMain.on("save-item", async (e, data: { playingType: string, id: string }) => {
   const {playingType, id} = data;
   await spotify.saveItem(playingType, id);
