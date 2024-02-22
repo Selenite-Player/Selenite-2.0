@@ -150,6 +150,26 @@ const isSaved = async (type: string, id: string) => {
   return isSaved[0];
 };
 
+const getPlaylists = async () => {
+  const res = await fetchWithBearer(
+    "https://api.spotify.com/v1/me/playlists?limit=50",
+    { method: 'GET' }
+  );
+
+  if (!res) { return; };
+
+  const lists = await res.json();
+
+  return lists.items.map((item: any) => ({
+    title: item.name,
+    owner: item.owner.display_name,
+    id: item.id,
+    /* link: item.href, */
+    songs: item.tracks.total,
+    img: item.images
+  }));
+};
+
 const spotify = {
   transferPlayback,
   getPlayback,
@@ -163,7 +183,8 @@ const spotify = {
   seek,
   saveItem,
   removeItem,
-  isSaved
+  isSaved,
+  getPlaylists
 };
 
 export default spotify;

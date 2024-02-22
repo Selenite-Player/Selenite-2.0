@@ -12,11 +12,13 @@
     "@types/node": "^20.11.17",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.18",
+    "@types/react-router-dom": "^5.3.3",
     "crypto": "^1.0.1",
     "electron-settings": "^4.0.2",
     "node-fetch": "^2.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.1",
     "react-scripts": "5.0.1",
     "ts-jest": "^29.1.2",
     "typescript": "^4.9.5",
@@ -24,7 +26,7 @@
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",
-    "start:electron": "npm run build:electron && electron ./dist/main.js",
+    "start:electron": "npm run build:electron && electron ./dist/electron/main.js",
     "build:react": "react-scripts build",
     "build:electron": "tsc",
     "test": "react-scripts test"

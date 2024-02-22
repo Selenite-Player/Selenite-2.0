@@ -11,7 +11,7 @@ function App() {
   const [id, setId] = useState("");
   const [playingType, setPlayingType] = useState("");
   const [title, setTitle] = useState("Hey there!");
-  const [img, setImg] = useState( "./assets/pfp.png");
+  const [img, setImg] = useState("./assets/pfp.png");
   const [artist, setArtist] = useState("Play something on Spotify to start");
   const [isSaved, setIsSaved] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -22,7 +22,7 @@ function App() {
   const [showDevices, setShowDevices] = useState(false);
 
   useEffect(() => {
-    setInterval(() => ipcRenderer.send("get-data"), 1000);
+    /* setInterval(() => ipcRenderer.send("get-data"), 1000);
 
     ipcRenderer.on("new-data", (e, data) => {
       setId(data.id);
@@ -36,13 +36,20 @@ function App() {
       setProgress(data.progress);
       setDuration(data.duration);
       setIsSaved(data.isSaved);
-    });
+    }); */
   }, []);
+
+  const openBrowse = () => {
+    ipcRenderer.send("open-browse");
+  };
 
   return (
     <div id="player" className="electron-window one">
       <span className="menu">
-        <i className="fa fa-list"></i>
+        <i 
+          className="fa fa-list"
+          onClick={openBrowse} >
+        </i>
       </span>
       <div className="drag-container"></div>
       <div className="data-wrapper">

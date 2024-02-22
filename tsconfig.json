@@ -22,7 +22,7 @@
   },
   "include": [
     "src",
-    "./main.ts"
+    "electron"
   ],
   "exclude": [
     "src/__tests__",

@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%) /* , url("./assets/transparent.png") */;
+  /* background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%); */
   font-family: 'proxima-nova', 'Lato', sans-serif;
   margin: 0;
   height: 100vH;

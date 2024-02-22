@@ -12,6 +12,8 @@ const scope = [
   "user-read-playback-state",
   "user-library-read",
   "user-library-modify",
+  "playlist-read-private",
+  "playlist-read-collaborative"
 ];
 
 class SpotifyAuth {
