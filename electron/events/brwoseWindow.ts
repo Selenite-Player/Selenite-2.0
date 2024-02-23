@@ -6,6 +6,10 @@ const browseWindowEvents = () => {
     const playlists = await spotify.getPlaylists();
     event.reply('update-playlists', playlists);
   });
+
+  ipcMain.on('start-playlist', (e, uri) => {
+    spotify.startPlaylist(uri);
+  });
 };
 
 export default browseWindowEvents;

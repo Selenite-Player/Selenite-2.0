@@ -39,6 +39,7 @@ const getPlayback = async () => {
       repeatState: data.repeat_state,
       progress: data.progress_ms,
       duration: data.item.duration_ms,
+      context: data.context.uri
     };
   } else if (playingType === "episode") {
     return {
@@ -164,10 +165,19 @@ const getPlaylists = async () => {
     title: item.name,
     owner: item.owner.display_name,
     id: item.id,
-    /* link: item.href, */
+    uri: item.uri,
     songs: item.tracks.total,
     img: item.images
   }));
+};
+
+const startPlaylist = async (uri: string) => {  
+  await fetchWithBearer(
+    `https://api.spotify.com/v1/me/player/play`,
+    { 
+      method: 'PUT',
+      body: JSON.stringify({ "context_uri": uri})
+    });
 };
 
 const spotify = {
@@ -184,7 +194,8 @@ const spotify = {
   saveItem,
   removeItem,
   isSaved,
-  getPlaylists
+  getPlaylists,
+  startPlaylist
 };
 
 export default spotify;

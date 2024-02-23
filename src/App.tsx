@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import './App.css';
+import { useEffect, useState } from 'react';
 import AlbumCover from './components/AlbumCover';
 import SongInfo from './components/SongInfo';
 import TimeRange from './components/TimeRange';
@@ -22,7 +22,7 @@ function App() {
   const [showDevices, setShowDevices] = useState(false);
 
   useEffect(() => {
-    /* setInterval(() => ipcRenderer.send("get-data"), 1000);
+    setInterval(() => ipcRenderer.send("get-data"), 1000);
 
     ipcRenderer.on("new-data", (e, data) => {
       setId(data.id);
@@ -36,7 +36,7 @@ function App() {
       setProgress(data.progress);
       setDuration(data.duration);
       setIsSaved(data.isSaved);
-    }); */
+    });
   }, []);
 
   const openBrowse = () => {
