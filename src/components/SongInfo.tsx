@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { PlaybackContext } from '../PlaybackContext';
 import './SongInfo.css';
 
-const SongInfo = ({title, artist}: {title: string, artist: string}): JSX.Element => {
+const SongInfo = (): JSX.Element => {
+  const {title, artist} = useContext(PlaybackContext);
   const [titleHover, setTitleHover] = useState(false);
   const [artistHover, setArtistHover] = useState(false);
 

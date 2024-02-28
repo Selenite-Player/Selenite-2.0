@@ -1,72 +1,71 @@
-import './App.css';
-import { useEffect, useState } from 'react';
-import AlbumCover from './components/AlbumCover';
-import SongInfo from './components/SongInfo';
-import TimeRange from './components/TimeRange';
-import Controls from './components/Controls';
-import Devices from './components/Devices';
-const { ipcRenderer } = window.require('electron');
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import { useReducer } from 'react';
+import { PlaybackContext, PlaybackDispatchContext } from './PlaybackContext';
+import Player from './Player';
+import Browse from './Browse';
+
+const router = createBrowserRouter([
+  {
+    path: "/index.html",
+    element: <Player />,
+  },
+  {
+    path: "/index.html/browse",
+    element: <Browse />,
+  },
+]);
+
+type PlaybackData = {
+  id: string,
+  playingType: string,
+  title: string,
+  img: string,
+  artist: string,
+  isSaved: boolean | null,
+  isPlaying: boolean,
+  shuffleState: boolean,
+  repeatState: string,
+  progress: number,
+  duration: number
+}
+
+function playbackReducer(playback: PlaybackData, action: any) {
+  switch (action.type) {
+    case 'update': {
+      return {...action.playback};
+    }
+    default: {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
+}
+
+const initialState = {
+  id: "",
+  playingType: "",
+  title: "Hey there!",
+  img: "./assets/pfp.png",
+  artist: "Play something on Spotify to start",
+  isSaved: null,
+  isPlaying: false,
+  shuffleState: false,
+  repeatState: "off",
+  progress: 0,
+  duration:100
+};
 
 function App() {
-  const [id, setId] = useState("");
-  const [playingType, setPlayingType] = useState("");
-  const [title, setTitle] = useState("Hey there!");
-  const [img, setImg] = useState("./assets/pfp.png");
-  const [artist, setArtist] = useState("Play something on Spotify to start");
-  const [isSaved, setIsSaved] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [shuffleState, setShuffleState] = useState(false);
-  const [repeatState, setRepeatState] = useState("off");
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(100);
-  const [showDevices, setShowDevices] = useState(false);
-
-  useEffect(() => {
-    setInterval(() => ipcRenderer.send("get-data"), 1000);
-
-    ipcRenderer.on("new-data", (e, data) => {
-      setId(data.id);
-      setPlayingType(data.playingType);
-      setTitle(data.title);
-      setImg(data.img);
-      setArtist(data.artist);
-      setIsPlaying(data.isPlaying);
-      setShuffleState(data.shuffleState);
-      setRepeatState(data.repeatState);
-      setProgress(data.progress);
-      setDuration(data.duration);
-      setIsSaved(data.isSaved);
-    });
-  }, []);
-
-  const openBrowse = () => {
-    ipcRenderer.send("open-browse");
-  };
+  const [playback, dispatch] = useReducer(playbackReducer, initialState);
 
   return (
-    <div id="player" className="electron-window one">
-      <span className="menu">
-        <i 
-          className="fa fa-list"
-          onClick={openBrowse} >
-        </i>
-      </span>
-      <div className="drag-container"></div>
-      <div className="data-wrapper">
-        <AlbumCover imgSrc={img} isSaved={isSaved} id={id} playingType={playingType} />
-        <div className="info-wrapper">
-          <SongInfo artist={artist} title={title} />
-          <TimeRange progress={progress} duration={duration} />
-          <Devices show={showDevices} setShowDevices={setShowDevices} />
-          <Controls 
-            repeatState={repeatState} 
-            shuffleState={shuffleState} 
-            isPlaying={isPlaying}
-            setShowDevices={setShowDevices}
-            showDevices={showDevices} />
-        </div>
-      </div>
-    </div>
+    <PlaybackContext.Provider value={playback}>
+      <PlaybackDispatchContext.Provider value={dispatch}>
+        <RouterProvider router={router} />
+      </PlaybackDispatchContext.Provider>
+    </PlaybackContext.Provider>
   );
 };
 

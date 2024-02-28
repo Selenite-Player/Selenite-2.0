@@ -1,14 +1,11 @@
 import './AlbumCover.css';
+import { PlaybackContext} from '../PlaybackContext';
+import { useContext } from 'react';
 const { ipcRenderer } = window.require('electron');
 
-type CoverProps = {
-  imgSrc: string, 
-  isSaved: boolean | null,
-  id: string,
-  playingType: string
-};
+const AlbumCover = (): JSX.Element => {
+  const { img, isSaved, id, playingType } = useContext(PlaybackContext);
 
-const AlbumCover = ({ imgSrc, isSaved, id, playingType }: CoverProps): JSX.Element => {
   const saveSong = () => {
     const message = isSaved ? "remove-item" : "save-item";
     ipcRenderer.send(message, { playingType, id });
@@ -27,7 +24,7 @@ const AlbumCover = ({ imgSrc, isSaved, id, playingType }: CoverProps): JSX.Eleme
         draggable="false"
         id="cover"
         className="cover box-shadow"
-        src={imgSrc}
+        src={img}
       />
     </div>
   )

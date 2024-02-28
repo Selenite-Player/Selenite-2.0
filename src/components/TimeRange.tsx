@@ -1,13 +1,10 @@
 import './TimeRange.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { PlaybackContext } from '../PlaybackContext';
 const { ipcRenderer } = window.require('electron');
 
-type TimeRangeProps = {
-  progress: number,
-  duration: number
-}
-
-const TimeRange = ({progress, duration}: TimeRangeProps) => {
+const TimeRange = () => {
+  const {progress, duration} = useContext(PlaybackContext);
   const [value, setValue] = useState(`${progress}`);
   const [seeking, setSeeking] = useState(false);
 

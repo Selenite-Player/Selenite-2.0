@@ -3,21 +3,6 @@ import { useState, useEffect } from 'react';
 import Playlists from './components/Playlists';
 const { ipcRenderer } = window.require('electron');
 
-/* const list: PlaylistInfo[] = [{
-  img: [{url: "../assets/pfp.png"}],
-  id: "1",
-  title: "RUNNING REMIX OF DEATH FOR ALL PEOPLE WHO LIKE NORMAL SENTENCES AND FEEL HORROR BY SCREAMING WAAAAAAAAAAAY TOO LONG TITLE THAT ARE DANGEROUSLY LOOMING OVER ONES HEAD!!!!!!!",
-  owner: "der längste name dem einem überhaupt nur einfallen kann",
-  songs: 1009
-},
-{
-  img: [{url: "../assets/pfp.png"}],
-  id: "1",
-  title: "RUNNING REMIX OF DEATH ",
-  owner: "der längste name dem",
-  songs: 1009
-}] */
-
 const Browse = () => {
   const [playlists, setPlaylists] = useState<any[]>([]);
 

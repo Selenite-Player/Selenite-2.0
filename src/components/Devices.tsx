@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 import './Devices.css';
 const { ipcRenderer } = window.require('electron');
 

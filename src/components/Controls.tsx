@@ -1,15 +1,15 @@
 import './Controls.css';
+import { useContext } from 'react';
+import { PlaybackContext } from '../PlaybackContext';
 const { ipcRenderer } = window.require('electron');
 
 type ControlsProps = {
-  repeatState: string,
-  shuffleState: boolean,
-  isPlaying: boolean,
   setShowDevices: React.Dispatch<React.SetStateAction<boolean>>,
   showDevices: boolean
 }
 
-const Controls = ({ repeatState, shuffleState, isPlaying, setShowDevices, showDevices}: ControlsProps): JSX.Element => {
+const Controls = ({ setShowDevices, showDevices}: ControlsProps): JSX.Element => {
+  const { repeatState, shuffleState, isPlaying } = useContext(PlaybackContext);
   const repeatOptions = ["off", "track", "context"];
 
   const play = () => {

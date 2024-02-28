@@ -19,7 +19,7 @@ const getPlayback = async () => {
   const data = await res.json();
 
   if (data.error) {
-    return console.log(data.error.status, data.error.message);
+    return console.log(data.error);
   };
 
   const playingType = data.currently_playing_type;
