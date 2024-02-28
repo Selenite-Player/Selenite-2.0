@@ -18,7 +18,7 @@ const Player = () => {
     ipcRenderer.on("new-data", (e, data) => {
       dispatch({ type: 'update', playback: data });
     });
-  }, [dispatch]);
+  }, []); // eslint-disable-line
 
   const openBrowse = () => {
     ipcRenderer.send("open-browse");
@@ -38,7 +38,7 @@ const Player = () => {
         <div className="info-wrapper">
           <SongInfo />
           <TimeRange />
-          <Devices show={showDevices} setShowDevices={setShowDevices} />
+          {showDevices && <Devices show={showDevices} setShowDevices={setShowDevices} />}
           <Controls setShowDevices={setShowDevices} showDevices={showDevices} />
         </div>
       </div>

@@ -25,7 +25,7 @@ const Devices = ({show, setShowDevices}: {show: boolean, setShowDevices: React.D
   };
 
   return (
-    <div id="device-popover" style={{ display: show ? 'block' : 'none'}}>
+    <div id="device-popover" >
       <ul>
         { devices.map(device => 
           <li 
