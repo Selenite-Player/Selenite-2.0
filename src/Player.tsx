@@ -13,11 +13,11 @@ const Player = () => {
   const dispatch = useContext(PlaybackDispatchContext);
 
   useEffect(() => {
-    /* setInterval(() => ipcRenderer.send("get-data"), 1000);
+    setInterval(() => ipcRenderer.send("get-data"), 1000);
 
     ipcRenderer.on("new-data", (e, data) => {
       dispatch({ type: 'update', playback: data });
-    }); */
+    });
   }, []); // eslint-disable-line
 
   const openBrowse = () => {
