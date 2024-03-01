@@ -3,9 +3,14 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { useReducer } from 'react';
-import { PlaybackContext, PlaybackDispatchContext, PlaybackData } from './PlaybackContext';
+import { 
+  PlaybackContext, 
+  PlaybackDispatchContext, 
+  type PlaybackData 
+} from './PlaybackContext';
 import Player from './Player';
 import Browse from './Browse';
+import Details from "./Details";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/index.html/browse",
     element: <Browse />,
+  },
+  {
+    path: "/index.html/details",
+    element: <Details />,
   },
 ]);
 

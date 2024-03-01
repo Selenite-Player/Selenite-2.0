@@ -175,7 +175,8 @@ const getPlaylists = async () => {
     id: item.id,
     uri: item.uri,
     songs: item.tracks.total,
-    img: item.images
+    img: item.images,
+    href: item.tracks.href
   }));
 };
 

@@ -2,17 +2,18 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import SpotifyAuth from "../src/api/spotify-auth";
 import settings from "electron-settings";
 import mainWindowEvents from "./events/mainWindow";
-import browseWindowEvents from "./events/brwoseWindow";
+import browseWindowEvents from "./events/browseWindow";
 import spotify from "../src/api/spotify";
 
 settings.configure({ fileName: "selenite-settings.json", prettify: true });
 
 let mainWindow: BrowserWindow;
 let browseWindow: BrowserWindow | null;
+let detailsWindow: BrowserWindow | null;
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
-    width: 450,
+    width: 465,
     height: 150,
     webPreferences: {
       nodeIntegration: true,
@@ -36,21 +37,41 @@ function createMainWindow() {
 function createBrowseWindow() {
   browseWindow = new BrowserWindow({
     width: 380,
-    height: 510,
+    height: 505,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
     transparent: true,
     frame: false,
-    title: "Brwose",
+    title: "Browse",
     hasShadow: false,
   });
 
   const pos = mainWindow.getPosition();
-  browseWindow.setPosition(pos[0]+470, pos[1]);
+  browseWindow.setPosition(pos[0]+475, pos[1]);
 
   browseWindow.loadURL('http://localhost:3000/index.html/browse');
+};
+
+function createDetailsWindow() {
+  detailsWindow = new BrowserWindow({
+    width: 465,
+    height: 345,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+    transparent: true,
+    frame: false,
+    title: "Details",
+    hasShadow: false,
+  });
+
+  const pos = mainWindow.getPosition();
+  detailsWindow.setPosition(pos[0], pos[1]+160);
+
+  detailsWindow.loadURL('http://localhost:3000/index.html/details');
 };
 
 function startApp(auth: SpotifyAuth) {
@@ -102,6 +123,13 @@ ipcMain.on('open-browse',() => {
 ipcMain.on('close-browse',() => {
   browseWindow!.close();
   browseWindow = null;
+});
+
+ipcMain.on('open-playlist',(e, href) => {
+  if(!detailsWindow){ 
+    console.log(href)
+    createDetailsWindow();
+  };
 });
 
 browseWindowEvents();

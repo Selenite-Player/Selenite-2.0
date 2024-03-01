@@ -8,7 +8,8 @@ type PlaylistInfo = {
   title: string,
   owner: string | null,
   songs: number,
-  uri: string
+  uri: string,
+  href: string
 };
 
 type PlaybackContext = {
@@ -25,8 +26,12 @@ const PlayListItem = ({playlist, context}: {playlist: PlaylistInfo, context: Pla
     ipcRenderer.send('start-playlist', playlist.uri);
   };
 
+  const openPlaylist = () => {
+    ipcRenderer.send('open-playlist', playlist.href);
+  };
+
   return (
-    <div className="playlist-item">
+    <div className="playlist-item" onClick={openPlaylist}>
       <div className="playlist-item-content">
         <div className="img-container">
           <img 

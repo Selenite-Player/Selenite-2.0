@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import './Browse.css';
+import { useEffect, useState } from 'react';
 import Playlists from './components/Playlists';
 const { ipcRenderer } = window.require('electron');
 
@@ -12,7 +12,7 @@ const Browse = () => {
     })
   },[]);
 
-  const closerBrowse = () => {
+  const closeBrowse = () => {
     ipcRenderer.send('close-browse');
   };
 
@@ -21,7 +21,7 @@ const Browse = () => {
       <div id="browse-menu-bar">
         <i 
           className="fa fa-times-circle"
-          onClick={closerBrowse}
+          onClick={closeBrowse}
         />
         <ul id="browse-menu-items">
           <li className='active'>Playlists</li>
