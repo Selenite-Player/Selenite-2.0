@@ -3,7 +3,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { useReducer } from 'react';
-import { PlaybackContext, PlaybackDispatchContext } from './PlaybackContext';
+import { PlaybackContext, PlaybackDispatchContext, PlaybackData } from './PlaybackContext';
 import Player from './Player';
 import Browse from './Browse';
 
@@ -18,20 +18,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-type PlaybackData = {
-  id: string,
-  playingType: string,
-  title: string,
-  img: string,
-  artist: string,
-  isSaved: boolean | null,
-  isPlaying: boolean,
-  shuffleState: boolean,
-  repeatState: string,
-  progress: number,
-  duration: number
-}
-
 function playbackReducer(playback: PlaybackData, action: any) {
   switch (action.type) {
     case 'update': {
@@ -41,7 +27,7 @@ function playbackReducer(playback: PlaybackData, action: any) {
       throw Error('Unknown action: ' + action.type);
     }
   }
-}
+};
 
 const initialState = {
   id: "",
@@ -54,7 +40,8 @@ const initialState = {
   shuffleState: false,
   repeatState: "off",
   progress: 0,
-  duration:100
+  duration:100,
+  context: { type: "", uri: ""}
 };
 
 function App() {

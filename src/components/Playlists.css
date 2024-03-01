@@ -32,7 +32,7 @@
   margin-right: 4%;
 }
 
-.img-container .fa.fa-play {
+.img-container .fa {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -41,10 +41,6 @@
   opacity: 0;
   transition: .5s ease;
   font-size: 1.5em;
-}
-
-.playlist-item:hover .img-container .fa.fa-play {
-  opacity: 1;
 }
 
 .img-container img {
@@ -57,6 +53,22 @@
 
 .playlist-item:hover img {
   opacity: 0.5;
+}
+
+.playlist-item:hover .img-container .fa.fa-play {
+  opacity: 1;
+}
+
+img.active {
+  opacity: 0.5;
+}
+
+img.active + .fa.fa-volume-up {
+  opacity: 1;
+}
+
+.playlist-item:hover .img-container .active ~ .fa.fa-play {
+  opacity: 0;
 }
 
 .playlist-item-content .details {

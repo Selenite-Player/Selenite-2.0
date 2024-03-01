@@ -1,4 +1,5 @@
 import './Playlists.css';
+import { useState, useEffect } from 'react';
 const { ipcRenderer } = window.require('electron');
 
 type PlaylistInfo = {
@@ -10,30 +11,41 @@ type PlaylistInfo = {
   uri: string
 };
 
-const PlayListItem = (props: PlaylistInfo) => {
-  if(props.songs <= 0) { return null };
+type PlaybackContext = {
+  type: string,
+  uri: string
+};
 
-  const img = props.img[0];
+const PlayListItem = ({playlist, context}: {playlist: PlaylistInfo, context: PlaybackContext}) => {
+  if(!playlist) { return null };
+
+  const img = playlist.img[0];
 
   const startPlaylist = () => {
-    ipcRenderer.send('start-playlist', props.uri);
+    ipcRenderer.send('start-playlist', playlist.uri);
   };
 
   return (
     <div className="playlist-item">
       <div className="playlist-item-content">
         <div className="img-container">
-          <img src={img ? img.url : ''} alt="playlist cover" />
+          <img 
+            src={img ? img.url : "../assets/pfp.png"} 
+            alt="playlist cover" 
+            className={playlist.uri === context.uri ? 'active' : ''}/>
+          <i 
+            className='fa fa-volume-up'
+          />
           <i 
             className='fa fa-play'
             onClick={startPlaylist}
           />
         </div>
         <div className="details">
-          <div className='playlist-title'>{props.title}</div>
+          <div className='playlist-title'>{playlist.title}</div>
           <span className="flex-row">
-            <p className="playlist-creator">{ props.owner ? "by " + props.owner : '' }</p>
-            <p className="song-number">{props.songs} songs</p>
+            <p className="playlist-creator">{ playlist.owner ? "by " + playlist.owner : '' }</p>
+            <p className="song-number">{playlist.songs} songs</p>
           </span>
         </div>
       </div>
@@ -41,11 +53,20 @@ const PlayListItem = (props: PlaylistInfo) => {
   )
 };
 
-const Playlists = ({playlists}: {playlists: PlaylistInfo[]}) => {
+const Playlists = ({playbackContext}:{playbackContext: PlaybackContext}) => {
+  const [playlists, setPlaylists] = useState<PlaylistInfo[]>([]);
+
+  useEffect(() => {
+    ipcRenderer.send('get-playlists');
+    ipcRenderer.on('update-playlists', (e, playlists) => {
+      setPlaylists(playlists);
+    });
+  }, []);
+
   return (
     <>
-      { playlists.map(((playlist: PlaylistInfo) => 
-        <PlayListItem key={playlist.id} {...playlist} />
+      {playlists.map(((playlist: PlaylistInfo) => 
+        <PlayListItem key={playlist.id} playlist={playlist} context={playbackContext} />
       ))} 
     </>
   )

@@ -1,17 +1,16 @@
+import { useEffect, useState } from 'react';
 import './Browse.css';
-import { useState, useEffect } from 'react';
 import Playlists from './components/Playlists';
 const { ipcRenderer } = window.require('electron');
 
 const Browse = () => {
-  const [playlists, setPlaylists] = useState<any[]>([]);
+  const [playbackContext, setPlaybackContext] = useState({type: "", uri: ""});
 
   useEffect(() => {
-    ipcRenderer.send('get-playlists');
-    ipcRenderer.on('update-playlists', (e, playlists) => {
-      setPlaylists(playlists);
-    });
-  }, []);
+    ipcRenderer.on('update-context', (e, context) => {
+      setPlaybackContext(context);
+    })
+  },[]);
 
   const closerBrowse = () => {
     ipcRenderer.send('close-browse');
@@ -32,7 +31,7 @@ const Browse = () => {
         </ul>
       </div>
       <div id="browse-content">
-        <Playlists playlists={playlists} />
+        <Playlists playbackContext={playbackContext} />
       </div>
     </div>
   )

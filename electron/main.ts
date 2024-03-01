@@ -3,6 +3,7 @@ import SpotifyAuth from "../src/api/spotify-auth";
 import settings from "electron-settings";
 import mainWindowEvents from "./events/mainWindow";
 import browseWindowEvents from "./events/brwoseWindow";
+import spotify from "../src/api/spotify";
 
 settings.configure({ fileName: "selenite-settings.json", prettify: true });
 
@@ -82,6 +83,15 @@ app.on("before-quit", () => {
 });
 
 mainWindowEvents();
+
+ipcMain.on('get-data', async (event) => {
+  const data = await spotify.getPlayback();
+
+  if(data){
+    event.reply('new-data', data);
+    browseWindow?.webContents.send('update-context', data.context);
+  };
+});
 
 ipcMain.on('open-browse',() => {
   if(!browseWindow){ 

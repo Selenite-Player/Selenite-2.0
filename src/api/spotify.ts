@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import settings from "electron-settings";
+import { type PlaybackData } from "../PlaybackContext";
 
 const fetchWithBearer = (url: string, payload: any) => {
   return fetch(url, {
@@ -8,12 +9,12 @@ const fetchWithBearer = (url: string, payload: any) => {
   }).catch(err => console.error(err));
 };
 
-const getPlayback = async () => {
+const getPlayback = async (): Promise<PlaybackData | void> => {
   const res: any = await fetchWithBearer("https://api.spotify.com/v1/me/player?additional_types=episode", { method: "GET" });
 
   if (res.status === 204) {
     console.log('Playback not available or inactive');
-    return null
+    return;
   };
 
   const data = await res.json();
@@ -39,7 +40,10 @@ const getPlayback = async () => {
       repeatState: data.repeat_state,
       progress: data.progress_ms,
       duration: data.item.duration_ms,
-      context: data.context.uri
+      context: {
+        type: data.context.type,
+        uri: data.context.uri
+      }
     };
   } else if (playingType === "episode") {
     return {
@@ -54,6 +58,10 @@ const getPlayback = async () => {
       repeatState: data.repeat_state,
       progress: data.progress_ms,
       duration: data.item.duration_ms,
+      context: {
+        type: data.context.type,
+        uri: data.context.uri
+      }
     };
   }
 };

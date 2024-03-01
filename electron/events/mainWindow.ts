@@ -3,12 +3,12 @@ import spotify from "../../src/api/spotify";
 import settings from "electron-settings";
 
 const mainWindowEvents = () => {
-  ipcMain.on('get-data', async (event) => {
+  /* ipcMain.on('get-data', async (event) => {
     const data = await spotify.getPlayback();
     if(data){
       event.reply('new-data', data);
     };
-  });
+  }); */
   
   ipcMain.on('play', async () => {
     await spotify.resumePlayback();
