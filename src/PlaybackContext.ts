@@ -2,6 +2,7 @@ import { createContext } from 'react';
 
 export type PlaybackData = {
   id: string,
+  uri: string,
   playingType: string,
   title: string,
   img: string,

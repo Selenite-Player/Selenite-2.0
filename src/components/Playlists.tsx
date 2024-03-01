@@ -26,12 +26,12 @@ const PlayListItem = ({playlist, context}: {playlist: PlaylistInfo, context: Pla
     ipcRenderer.send('start-playlist', playlist.uri);
   };
 
-  const openPlaylist = () => {
-    ipcRenderer.send('open-playlist', playlist.href);
+  const openDetails = () => {
+    ipcRenderer.send('open-details', playlist.id);
   };
 
   return (
-    <div className="playlist-item" onClick={openPlaylist}>
+    <div className="playlist-item" onClick={openDetails}>
       <div className="playlist-item-content">
         <div className="img-container">
           <img 

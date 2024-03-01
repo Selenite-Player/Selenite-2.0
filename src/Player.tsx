@@ -1,6 +1,6 @@
 import './Player.css';
 import { useEffect, useState, useContext } from 'react';
-import { PlaybackDispatchContext } from './PlaybackContext';
+import { PlaybackContext, PlaybackDispatchContext } from './PlaybackContext';
 import AlbumCover from './components/AlbumCover';
 import SongInfo from './components/SongInfo';
 import TimeRange from './components/TimeRange';
@@ -11,6 +11,7 @@ const { ipcRenderer } = window.require('electron');
 const Player = () => {
   const [showDevices, setShowDevices] = useState(false);
   const dispatch = useContext(PlaybackDispatchContext);
+  const {uri, context} = useContext(PlaybackContext)
 
   useEffect(() => {
     setInterval(() => ipcRenderer.send("get-data"), 1000);
@@ -19,6 +20,12 @@ const Player = () => {
       dispatch({ type: 'update', playback: data });
     });
   }, []); // eslint-disable-line
+
+  useEffect(() => {
+    if(context.type === "playlist") {
+      ipcRenderer.send("update-playback-context", uri);
+    }
+  }, [uri, context])
 
   const openBrowse = () => {
     ipcRenderer.send("open-browse");

@@ -56,6 +56,8 @@ a:hover {
   margin-top: 10px;
   margin-right: 10px;
   font-size: 1.3em;
+  position: absolute;
+  right: 2%;
 }
 
 .warning {
@@ -67,46 +69,10 @@ a:hover {
   display: block;
 }
 
-.menu {
-  position: absolute;
-  right: 2%;
-}
-
 .fa-list {
   color: hsl(207, 28%, 50%);
 }
 
 .fa-list:hover {
   color: hsl(207, 28%, 25%);
-}
-
-.menu-input {
-  width: 100%;
-  text-align: center;
-  background-color: #333;
-  height: 90%;
-  padding: 10px;
-  color: #fff;
-  position: relative;
-}
-
-.menu-input input {
-  width: 350px;
-  height: 30px;
-  margin: 0 auto;
-}
-
-.menu-input a {
-  text-decoration: underline;
-}
-
-.menu-input a:hover {
-  color: #1db954;
-}
-
-.menu-save-btn {
-  position: absolute;
-  bottom: 20px;
-  right: 50px;
-  cursor: pointer;
 }

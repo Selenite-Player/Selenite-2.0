@@ -30,6 +30,7 @@ const getPlayback = async (): Promise<PlaybackData | void> => {
 
     return {
       id: data.item.id,
+      uri: data.item.uri,
       playingType: playingType,
       title: data.item.name,
       artist: artists.join(", "),
@@ -48,6 +49,7 @@ const getPlayback = async (): Promise<PlaybackData | void> => {
   } else if (playingType === "episode") {
     return {
       id: data.item.id,
+      uri: data.item.uri,
       playingType: playingType,
       title: data.item.name,
       artist: data.item.show.name,
@@ -180,6 +182,24 @@ const getPlaylists = async () => {
   }));
 };
 
+const getPlaylist = async (id: string) => {
+  const res = await fetchWithBearer(
+    `https://api.spotify.com/v1/playlists/${id}`,
+    { method: 'GET' }
+  );
+
+  if (!res) { return; };
+
+  const list = await res.json();
+
+  return ({
+    title: list.name,
+    tracks: list.tracks.items,
+    total: list.tracks.total,
+    img: list.images,
+  });
+};
+
 const startPlaylist = async (uri: string) => {  
   await fetchWithBearer(
     `https://api.spotify.com/v1/me/player/play`,
@@ -204,6 +224,7 @@ const spotify = {
   removeItem,
   isSaved,
   getPlaylists,
+  getPlaylist,
   startPlaylist
 };
 

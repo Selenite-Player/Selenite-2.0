@@ -1,6 +1,6 @@
 import './Details.css';
-/* import { useEffect, useState } from 'react';
-const { ipcRenderer } = window.require('electron'); */
+import { useEffect, useState } from 'react';
+const { ipcRenderer } = window.require('electron');
 
 const sampleData = [{
     img: "../assets/pfp.png",
@@ -16,40 +16,71 @@ const sampleData = [{
   }
 ]
 
-const ListItem = ({track, num}: any) => {
-  const time = new Date(track.duration);
+const ListItem = ({track, num, playbackTrack}: any) => {
+  const time = new Date(track.duration_ms);
+  const seconds = time.getSeconds();
+  const artists = track.artists.map((artist: any) => artist.name)
+  const isPlaying = playbackTrack === track.uri;
 
   return (
-    <div className="details-table-item">
-      <p className='details-list-number'>{num}</p>
-      <p className='details-list-title'>
-        <img src="../assets/pfp.png" alt="" />
-        {track.title}
+    <div className={`details-table-item ${isPlaying ? 'current' : ''}`}>
+      <p className='details-list-number'>
+        { isPlaying 
+          ? <i className='fa fa-volume-up'></i>
+          : num
+        }
       </p>
-      <p className='details-list-artist'>{track.artist}</p>
-      <p className='details-list-duration'>{`${time.getMinutes()}:${time.getSeconds()}`}</p>
+      <p 
+        className='details-list-title' 
+      >
+        <img src={track.album.images[0].url} alt="" />
+        {track.name}
+      </p>
+      <p className='details-list-artist'>{artists.join(', ')}</p>
+      <p className='details-list-duration'>{`${time.getMinutes()}:${seconds < 10 ? "0" + seconds : seconds}`}</p>
     </div>
   )
-}
+};
 
 const Details = () => {
-  /* useEffect(() => {
-    ipcRenderer.on('update-context', (e, context) => {
-      
-    })
+  const [details, setDetails] = useState<any>({
+    title: "",
+    img: ["../assets/pfp.png"],
+    total: 0
+  });
+  const [playbackTrack, setPlaybackTrack] = useState()
+
+  const [tracks, setTracks] = useState<any[]>([]);
+
+  useEffect(() => {
+    ipcRenderer.send('get-details');
+    
+    ipcRenderer.on('update-details', (e, data) => {
+      const {tracks, ...details} = data;
+      setDetails(details);
+      setTracks(tracks);
+    });
+
+    ipcRenderer.on("new-playback-context", (e, uri) => {
+      setPlaybackTrack(uri);
+    });
   },[]);
 
   const closeDetails = () => {
     ipcRenderer.send('close-details');
-  }; */
+  };
 
   return (
     <div id="details-window">
       <div id="title-wrapper">
-        <img src="../assets/pfp.png" alt="" />
+        <i 
+          className="fa fa-times-circle"
+          onClick={closeDetails}
+        />
+        <img src={details.img[0].url} alt="" />
         <div id="title-text">
-          <p id="details-title">This is a very long title but with reasonable words that aren't endlessly long</p>
-          <p id="details-info">27 songs, 2hr 11min</p>
+          <p id="details-title">{details.title}</p>
+          <p id="details-info">{details.total + " songs"}</p>
         </div>
       </div>
       <div id="details-content">
@@ -59,8 +90,13 @@ const Details = () => {
           <p className='details-list-artist'>Artist</p>
           <p className='details-list-duration'><i className='fa fa-clock-o'/></p>
         </div>
-        {sampleData.map((item, i) => 
-          <ListItem key={i} track={item} num={i+1} />
+        {tracks?.map((item: any, i: number) => 
+          <ListItem 
+            key={i} 
+            track={item.track} 
+            num={i+1} 
+            playbackTrack={playbackTrack}
+          />
         )}
       </div>
     </div>

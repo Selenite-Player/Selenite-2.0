@@ -1,6 +1,6 @@
 #details-window {
   height: 100vH;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   box-sizing: border-box;
 }
 
@@ -49,7 +49,7 @@
 
 #details-content {
   padding: 3%;
-  height: 100%;
+  height: 74%;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -111,6 +111,15 @@
 .details-list-duration {
   text-align: right;
   width: 10%;
+}
+
+.current {
+  font-weight: bold;
+  color: black;
+}
+
+.details-list-number i {
+  color: black;
 }
 
 .fa.fa-clock-o {

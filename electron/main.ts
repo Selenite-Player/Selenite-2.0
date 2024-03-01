@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, webContents } from "electron";
 import SpotifyAuth from "../src/api/spotify-auth";
 import settings from "electron-settings";
 import mainWindowEvents from "./events/mainWindow";
@@ -125,11 +125,28 @@ ipcMain.on('close-browse',() => {
   browseWindow = null;
 });
 
-ipcMain.on('open-playlist',(e, href) => {
-  if(!detailsWindow){ 
-    console.log(href)
-    createDetailsWindow();
-  };
+ipcMain.on('open-details', async (e, id) => {
+  if(detailsWindow){
+    const data = await spotify.getPlaylist(id);
+    detailsWindow.webContents.send('update-details', data);
+    return;
+  }
+
+  createDetailsWindow();
+
+  ipcMain.on('get-details', async (event) => {
+    const data = await spotify.getPlaylist(id);
+    event.reply('update-details', data);
+  });
+});
+
+ipcMain.on('close-details',() => {
+  detailsWindow!.close();
+  detailsWindow = null;
+});
+
+ipcMain.on("update-playback-context", (e, uri) => {
+  detailsWindow?.webContents.send("new-playback-context", uri);
 });
 
 browseWindowEvents();
