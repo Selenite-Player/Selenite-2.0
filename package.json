@@ -29,7 +29,8 @@
     "start:electron": "npm run build:electron && electron ./dist/electron/main.js",
     "build:react": "react-scripts build",
     "build:electron": "tsc",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "start:app": "concurrently \"npm start\" \"npm run start:electron\""
   },
   "eslintConfig": {
     "extends": [
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@types/node-fetch": "^2.6.11",
+    "concurrently": "^8.2.2",
     "dotenv": "^16.4.4",
     "electron": "^28.2.1",
     "electron-reload": "^2.0.0-alpha.1"
