@@ -13,7 +13,7 @@ const getPlayback = async (): Promise<PlaybackData | void> => {
   const res: any = await fetchWithBearer("https://api.spotify.com/v1/me/player?additional_types=episode", { method: "GET" });
 
   if (res.status === 204) {
-    console.log('Playback not available or inactive');
+    /* console.log('Playback not available or inactive'); */
     return;
   };
 
@@ -197,6 +197,7 @@ const getPlaylist = async (id: string) => {
     tracks: list.tracks.items,
     total: list.tracks.total,
     img: list.images,
+    uri: list.uri
   });
 };
 
@@ -206,6 +207,17 @@ const startPlaylist = async (uri: string) => {
     { 
       method: 'PUT',
       body: JSON.stringify({ "context_uri": uri})
+    });
+};
+
+const playSong = async (uri: string, position: number) => { 
+  await fetchWithBearer(
+    `https://api.spotify.com/v1/me/player/play`,
+    { 
+      method: 'PUT',
+      body: JSON.stringify({ "context_uri": uri, "offset": {
+        "position": position
+    },})
     });
 };
 
@@ -225,7 +237,8 @@ const spotify = {
   isSaved,
   getPlaylists,
   getPlaylist,
-  startPlaylist
+  startPlaylist,
+  playSong
 };
 
 export default spotify;

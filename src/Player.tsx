@@ -11,7 +11,7 @@ const { ipcRenderer } = window.require('electron');
 const Player = () => {
   const [showDevices, setShowDevices] = useState(false);
   const dispatch = useContext(PlaybackDispatchContext);
-  const {uri, context} = useContext(PlaybackContext)
+  const {uri, context} = useContext(PlaybackContext);
 
   useEffect(() => {
     setInterval(() => ipcRenderer.send("get-data"), 1000);
@@ -24,7 +24,7 @@ const Player = () => {
   useEffect(() => {
     if(context.type === "playlist") {
       ipcRenderer.send("update-playback-context", uri);
-    }
+    };
   }, [uri, context])
 
   const openBrowse = () => {

@@ -54,15 +54,24 @@
   overflow-x: hidden;
 }
 
-#details-table-header,
-.details-table-item {
+#details-list-header,
+.details-list-item {
   width: 100%;
   display: flex;
   font-size: 14px;
   padding: 5px 0;
 }
 
-#details-table-header {
+.details-list-item {
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.details-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+#details-list-header {
   text-transform: uppercase;
   border-bottom: 1px solid white;
   line-height: 14px;
@@ -111,6 +120,7 @@
 .details-list-duration {
   text-align: right;
   width: 10%;
+  margin-right: 5px;
 }
 
 .current {

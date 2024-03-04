@@ -2,37 +2,28 @@ import './Details.css';
 import { useEffect, useState } from 'react';
 const { ipcRenderer } = window.require('electron');
 
-const sampleData = [{
-    img: "../assets/pfp.png",
-    title: "A Message to Myself - Mahogany Sessions",
-    artist: "Roo Panes",
-    duration: 180000+25000
-  },
-  {
-    img: "../assets/pfp.png",
-    title: "This Too Shall Pass",
-    artist: "Parables and Primes",
-    duration: 290000+25000
-  }
-]
-
-const ListItem = ({track, num, playbackTrack}: any) => {
+const ListItem = ({track, pos, playbackContext, listUri}: any) => {
   const time = new Date(track.duration_ms);
   const seconds = time.getSeconds();
-  const artists = track.artists.map((artist: any) => artist.name)
-  const isPlaying = playbackTrack === track.uri;
+  const artists = track.artists.map((artist: any) => artist.name);
+  const isPlaying = playbackContext === track.uri;
+
+  const playSong = () => {
+    ipcRenderer.send('play-song', {contextUri: listUri, position: pos-1});
+  };
 
   return (
-    <div className={`details-table-item ${isPlaying ? 'current' : ''}`}>
+    <div 
+      className={`details-list-item ${isPlaying ? 'current' : ''}`}
+      onClick={playSong}
+    >
       <p className='details-list-number'>
         { isPlaying 
           ? <i className='fa fa-volume-up'></i>
-          : num
+          : pos
         }
       </p>
-      <p 
-        className='details-list-title' 
-      >
+      <p className='details-list-title' >
         <img src={track.album.images[0].url} alt="" />
         {track.name}
       </p>
@@ -46,10 +37,10 @@ const Details = () => {
   const [details, setDetails] = useState<any>({
     title: "",
     img: ["../assets/pfp.png"],
-    total: 0
+    total: 0,
+    uri: ""
   });
-  const [playbackTrack, setPlaybackTrack] = useState()
-
+  const [playbackContext, setPlaybackContext] = useState()
   const [tracks, setTracks] = useState<any[]>([]);
 
   useEffect(() => {
@@ -61,8 +52,8 @@ const Details = () => {
       setTracks(tracks);
     });
 
-    ipcRenderer.on("new-playback-context", (e, uri) => {
-      setPlaybackTrack(uri);
+    ipcRenderer.on("new-playback-context", (e, trackUri) => {
+      setPlaybackContext(trackUri);
     });
   },[]);
 
@@ -84,7 +75,7 @@ const Details = () => {
         </div>
       </div>
       <div id="details-content">
-        <div id="details-table-header">
+        <div id="details-list-header">
           <p className='details-list-number'>#</p>
           <p className='details-list-title'>Title</p>
           <p className='details-list-artist'>Artist</p>
@@ -94,8 +85,9 @@ const Details = () => {
           <ListItem 
             key={i} 
             track={item.track} 
-            num={i+1} 
-            playbackTrack={playbackTrack}
+            pos={i+1} 
+            playbackContext={playbackContext}
+            listUri={details.uri}
           />
         )}
       </div>

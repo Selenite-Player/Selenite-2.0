@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, webContents } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import SpotifyAuth from "../src/api/spotify-auth";
 import settings from "electron-settings";
 import mainWindowEvents from "./events/mainWindow";
@@ -145,8 +145,12 @@ ipcMain.on('close-details',() => {
   detailsWindow = null;
 });
 
-ipcMain.on("update-playback-context", (e, uri) => {
-  detailsWindow?.webContents.send("new-playback-context", uri);
+ipcMain.on("update-playback-context", (e, trackUri) => {
+  detailsWindow?.webContents.send("new-playback-context", trackUri);
+});
+
+ipcMain.on("play-song", (e, {contextUri, position}) => {
+  spotify.playSong(contextUri, position);
 });
 
 browseWindowEvents();
