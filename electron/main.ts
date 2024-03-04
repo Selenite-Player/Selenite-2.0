@@ -76,7 +76,7 @@ function createDetailsWindow() {
 
 function startApp(auth: SpotifyAuth) {
   createMainWindow();
-  setInterval(auth.getRefreshToken, 60 * 59 * 1000);
+  setInterval(() => auth.getRefreshToken(), 60 * 59 * 1000);
 };
 
 app.whenReady().then(async () => {
