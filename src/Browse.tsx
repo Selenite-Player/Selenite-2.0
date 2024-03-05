@@ -20,7 +20,6 @@ const Browse = () => {
 
   useEffect(() => {
     ipcRenderer.on('update-context', (e, context) => {
-      console.log(context)
       setPlaybackContext(context);
     })
   },[]);
@@ -61,9 +60,7 @@ const Browse = () => {
           )}
         </ul>
       </div>
-      <div id="browse-content">
-        {renderContent(navItem)}
-      </div>
+      {renderContent(navItem)}
     </div>
   )
 };

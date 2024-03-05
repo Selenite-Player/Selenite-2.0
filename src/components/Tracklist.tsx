@@ -39,13 +39,12 @@ const Tracklist = ({ tracks, context }: { tracks: any[], context: any }) => {
 
   useEffect(() => {
     ipcRenderer.on("new-playback-context", (e, data) => {
-      console.log(data)
       setPlaybackContext(data);
     });
   },[]);
   
   return (
-    <div className="tracklist">
+    <div className="tracklist" >
       <div id="tracklist-header">
         <p className='tracklist-number'>#</p>
         <p className='tracklist-title'>Title</p>

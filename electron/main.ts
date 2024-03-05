@@ -158,4 +158,9 @@ ipcMain.on('get-saved-songs', async (event) => {
   event.reply('update-saved-songs', songs);
 });
 
+ipcMain.on('get-next-saved-songs', async (event, url) => {
+  const data = await spotify.getNextSavedSongs(url);
+  event.reply('next-saved-songs', data);
+});
+
 browseWindowEvents();

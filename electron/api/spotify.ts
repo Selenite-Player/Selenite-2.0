@@ -223,11 +223,19 @@ const playSong = async (uri: string, position: number) => {
   );
 };
 
-// ipcRenderer.send('play-song', {contextUri: 'spotify:user:schlenges:collection', position: 2})
-
 const getSavedSongs = async () => {
   const res = await fetchWithBearer(
     `https://api.spotify.com/v1/me/tracks?limit=50`,
+    { method: 'GET' }
+  );
+
+  const data = await res!.json();
+  return data;
+};
+
+const getNextSavedSongs = async (url: string) => {
+  const res = await fetchWithBearer(
+    url,
     { method: 'GET' }
   );
 
@@ -253,7 +261,8 @@ const spotify = {
   getPlaylist,
   startPlaylist,
   playSong,
-  getSavedSongs
+  getSavedSongs,
+  getNextSavedSongs
 };
 
 export default spotify;

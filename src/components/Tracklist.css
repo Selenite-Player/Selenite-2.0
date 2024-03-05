@@ -1,8 +1,8 @@
 .tracklist {
   padding: 3%;
-  height: 74%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  /* height: 74%; */
+  /* overflow-y: scroll;
+  overflow-x: hidden; */
 }
 
 #tracklist-header,

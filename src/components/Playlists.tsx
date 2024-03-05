@@ -69,10 +69,12 @@ const Playlists = ({playbackContext}:{playbackContext: PlaybackContext}) => {
   }, []);
 
   return (
-    <div id="playlists">
-      {playlists.map(((playlist: PlaylistInfo) => 
-        <PlayListItem key={playlist.id} playlist={playlist} context={playbackContext} />
-      ))} 
+    <div id="browse-content">
+      <div id="playlists">
+        {playlists.map(((playlist: PlaylistInfo) => 
+          <PlayListItem key={playlist.id} playlist={playlist} context={playbackContext} />
+        ))} 
+      </div>
     </div>
   )
 };
