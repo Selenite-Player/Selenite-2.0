@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import settings from "electron-settings";
-import { type PlaybackData } from "../PlaybackContext";
+import { type PlaybackData } from "../../src/PlaybackContext";
 
 const fetchWithBearer = (url: string, payload: any) => {
   return fetch(url, {

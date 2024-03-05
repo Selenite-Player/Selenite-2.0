@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import spotify from "../../src/api/spotify";
+import spotify from "../api/spotify";
 import settings from "electron-settings";
 
 const mainWindowEvents = () => {

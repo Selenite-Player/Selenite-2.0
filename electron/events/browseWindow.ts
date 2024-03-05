@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import spotify from "../../src/api/spotify";
+import spotify from "../api/spotify";
 
 const browseWindowEvents = () => {
   ipcMain.on('get-playlists', async (event) => {

@@ -1,9 +1,9 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import SpotifyAuth from "../src/api/spotify-auth";
+import SpotifyAuth from "./api/spotify-auth";
 import settings from "electron-settings";
 import mainWindowEvents from "./events/mainWindow";
 import browseWindowEvents from "./events/browseWindow";
-import spotify from "../src/api/spotify";
+import spotify from "./api/spotify";
 
 settings.configure({ fileName: "selenite-settings.json", prettify: true });
 
