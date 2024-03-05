@@ -22,9 +22,7 @@ const Player = () => {
   }, []); // eslint-disable-line
 
   useEffect(() => {
-    if(context.type === "playlist") {
-      ipcRenderer.send("update-playback-context", uri);
-    };
+    ipcRenderer.send("update-playback-context", {trackUri: uri, context: context});
   }, [uri, context])
 
   const openBrowse = () => {

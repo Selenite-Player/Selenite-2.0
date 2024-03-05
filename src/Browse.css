@@ -3,7 +3,7 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
-#browse-menu-bar {
+#browse-nav-bar {
   height: 10%;
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
@@ -11,7 +11,7 @@
   position: relative;
 }
 
-#browse-menu-items {
+#browse-nav-items {
   height: 100%;
   padding: 0 10px;
   margin: 0;
@@ -23,11 +23,11 @@
   align-items: center;
 }
 
-#browse-menu-items li {
+#browse-nav-items li {
   cursor: pointer;
 }
 
-#browse-menu-items li.active {
+#browse-nav-items li.active {
   text-decoration: underline;
 }
 
@@ -54,4 +54,9 @@
 .flex-row {
   display: flex;
   width: 100%;
+}
+
+#saved-songs {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
 }

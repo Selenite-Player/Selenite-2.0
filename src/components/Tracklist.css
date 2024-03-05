@@ -1,0 +1,89 @@
+.tracklist {
+  padding: 3%;
+  height: 74%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#tracklist-header,
+.tracklist-item {
+  width: 100%;
+  display: flex;
+  font-size: 14px;
+  padding: 5px 0;
+}
+
+#tracklist-header {
+  text-transform: uppercase;
+  border-bottom: 1px solid white;
+  line-height: 14px;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.tracklist-item {
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.tracklist-item:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.tracklist-number,
+.tracklist-title,
+.tracklist-artist,
+.tracklist-duration {
+  margin: 0;
+} 
+
+.tracklist-number {
+  width: 5%;
+  margin-right: 2%;
+  text-align: right;
+}
+
+.tracklist-title {
+  width: 47%;
+  margin-right: 2%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.tracklist-title img {
+  width: 15px;
+  height: 15px;
+  margin-right: 2%;
+}
+
+.tracklist-artist {
+  width: 32%;
+  margin-right: 2%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.tracklist-duration {
+  text-align: right;
+  width: 10%;
+  margin-right: 5px;
+}
+
+.current {
+  font-weight: bold;
+  color: black;
+}
+
+.tracklist-number i {
+  color: black;
+}
+
+.fa.fa-clock-o {
+  color: #333;
+}

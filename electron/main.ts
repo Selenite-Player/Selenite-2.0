@@ -110,7 +110,6 @@ ipcMain.on('get-data', async (event) => {
 
   if(data){
     event.reply('new-data', data);
-    browseWindow?.webContents.send('update-context', data.context);
   };
 });
 
@@ -145,12 +144,18 @@ ipcMain.on('close-details',() => {
   detailsWindow = null;
 });
 
-ipcMain.on("update-playback-context", (e, trackUri) => {
+ipcMain.on("update-playback-context", (e, {trackUri, context}) => {
   detailsWindow?.webContents.send("new-playback-context", trackUri);
+  browseWindow?.webContents.send("new-playback-context", { trackUri, context });
 });
 
 ipcMain.on("play-song", (e, {contextUri, position}) => {
   spotify.playSong(contextUri, position);
+});
+
+ipcMain.on('get-saved-songs', async (event) => {
+  const songs = await spotify.getSavedSongs();
+  event.reply('update-saved-songs', songs);
 });
 
 browseWindowEvents();

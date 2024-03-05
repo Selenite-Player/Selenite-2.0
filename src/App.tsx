@@ -40,6 +40,7 @@ function playbackReducer(playback: PlaybackData, action: any) {
 
 const initialState = {
   id: "",
+  uri: "",
   playingType: "",
   title: "Hey there!",
   img: "./assets/pfp.png",

@@ -207,7 +207,8 @@ const startPlaylist = async (uri: string) => {
     { 
       method: 'PUT',
       body: JSON.stringify({ "context_uri": uri})
-    });
+    }
+  );
 };
 
 const playSong = async (uri: string, position: number) => { 
@@ -217,8 +218,21 @@ const playSong = async (uri: string, position: number) => {
       method: 'PUT',
       body: JSON.stringify({ "context_uri": uri, "offset": {
         "position": position
-    },})
-    });
+      },})
+    }
+  );
+};
+
+// ipcRenderer.send('play-song', {contextUri: 'spotify:user:schlenges:collection', position: 2})
+
+const getSavedSongs = async () => {
+  const res = await fetchWithBearer(
+    `https://api.spotify.com/v1/me/tracks?limit=50`,
+    { method: 'GET' }
+  );
+
+  const data = await res!.json();
+  return data;
 };
 
 const spotify = {
@@ -238,7 +252,8 @@ const spotify = {
   getPlaylists,
   getPlaylist,
   startPlaylist,
-  playSong
+  playSong,
+  getSavedSongs
 };
 
 export default spotify;
