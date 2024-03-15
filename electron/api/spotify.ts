@@ -9,6 +9,22 @@ const fetchWithBearer = (url: string, payload: any) => {
   }).catch(err => console.error(err));
 };
 
+const getUsername = async () => {
+  const res = await fetchWithBearer(
+    `https://api.spotify.com/v1/me`,
+    { method: 'GET' }
+  );
+
+  const data = await res!.json();
+
+  const username = data.display_name;
+
+  settings.setSync({
+    ...settings.getSync(),
+    username: username
+  });
+};
+
 const getPlayback = async (): Promise<PlaybackData | void> => {
   const res: any = await fetchWithBearer("https://api.spotify.com/v1/me/player?additional_types=episode", { method: "GET" });
 
@@ -24,6 +40,12 @@ const getPlayback = async (): Promise<PlaybackData | void> => {
   };
 
   const playingType = data.currently_playing_type;
+  const context = data.context 
+    ? {
+        type: data.context.type,
+        uri: data.context.uri
+      }
+    : undefined;
 
   if (playingType === "track") {
     const artists = data.item.artists.map((artist: any) => artist.name);
@@ -41,10 +63,7 @@ const getPlayback = async (): Promise<PlaybackData | void> => {
       repeatState: data.repeat_state,
       progress: data.progress_ms,
       duration: data.item.duration_ms,
-      context: {
-        type: data.context.type,
-        uri: data.context.uri
-      }
+      context: context
     };
   } else if (playingType === "episode") {
     return {
@@ -60,12 +79,9 @@ const getPlayback = async (): Promise<PlaybackData | void> => {
       repeatState: data.repeat_state,
       progress: data.progress_ms,
       duration: data.item.duration_ms,
-      context: {
-        type: data.context.type,
-        uri: data.context.uri
-      }
+      context: context
     };
-  }
+  };
 };
 
 const getDevices = async (): Promise<any[]> => {
@@ -244,6 +260,7 @@ const getNextSavedSongs = async (url: string) => {
 };
 
 const spotify = {
+  getUsername,
   transferPlayback,
   getPlayback,
   getDevices,

@@ -16,7 +16,7 @@ export type PlaybackData = {
   context: {
     type: string,
     uri: string
-  }
+  } | undefined
 };
 
 export const PlaybackContext = createContext<PlaybackData>({} as PlaybackData);

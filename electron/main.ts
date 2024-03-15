@@ -10,6 +10,7 @@ settings.configure({ fileName: "selenite-settings.json", prettify: true });
 let mainWindow: BrowserWindow;
 let browseWindow: BrowserWindow | null;
 let detailsWindow: BrowserWindow | null;
+let spotyAuth: SpotifyAuth;
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
@@ -77,19 +78,29 @@ function createDetailsWindow() {
 function startApp(auth: SpotifyAuth) {
   createMainWindow();
   setInterval(() => auth.getRefreshToken(), 60 * 59 * 1000);
+  spotify.getUsername();
 };
 
 app.whenReady().then(async () => {
-  const spotyAuth = new SpotifyAuth();
+  spotyAuth = new SpotifyAuth();
+  let refreshToken = await spotyAuth.getRefreshToken();
 
-  if(!settings.getSync('token.refresh')){
+  if(!refreshToken) {
+    const authWindow = new BrowserWindow();
+    spotyAuth.authenticate(authWindow);
+    authWindow.on('close', () => { startApp(spotyAuth); });
+  } else {
+    startApp(spotyAuth);
+  };
+
+  /* if(!settings.getSync('token.refresh')){
     const authWindow = new BrowserWindow();
     spotyAuth.authenticate(authWindow);
     authWindow.on('close', () => { startApp(spotyAuth); });
   } else {
     await spotyAuth.getRefreshToken();
     startApp(spotyAuth);
-  };
+  }; */
 });
 
 app.on("window-all-closed", () => {
@@ -106,7 +117,12 @@ app.on("before-quit", () => {
 mainWindowEvents();
 
 ipcMain.on('get-data', async (event) => {
-  const data = await spotify.getPlayback();
+  let data = await spotify.getPlayback();
+
+  /* if(data == null){
+    await spotyAuth.getRefreshToken();
+    data = await spotify.getPlayback();
+  }; */
 
   if(data){
     event.reply('new-data', data);

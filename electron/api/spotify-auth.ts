@@ -107,8 +107,8 @@ class SpotifyAuth {
     });
   };
 
-  async getRefreshToken(): Promise<void> {
-    const refreshToken = settings.getSync('token.refresh') as string;
+  async getRefreshToken(): Promise<string | null> {
+    let refreshToken = settings.getSync('token.refresh') as string;
 
     const payload = {
       method: 'POST',
@@ -125,7 +125,7 @@ class SpotifyAuth {
     const res = await fetch("https://accounts.spotify.com/api/token", payload)
       .catch((err) => console.error(err));
 
-    if(!res) { return };
+    if(!res || res.status === 400) { return null };
 
     if(res.status === 200) {
       const data = await res.json();
@@ -137,7 +137,11 @@ class SpotifyAuth {
           refresh: data.refresh_token
         }
       });
-    }
+
+      refreshToken = data.refresh_token;
+    };
+
+    return refreshToken;
   };
 
   generateCodeVerifier(length: number): string {
