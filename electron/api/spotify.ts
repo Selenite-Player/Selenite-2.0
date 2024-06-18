@@ -187,7 +187,7 @@ const getPlaylists = async () => {
 
   const lists = await res.json();
 
-  return lists.items.map((item: any) => ({
+  const playlists = lists.items.map((item: any) => ({
     title: item.name,
     owner: item.owner.display_name,
     id: item.id,
@@ -196,6 +196,11 @@ const getPlaylists = async () => {
     img: item.images,
     href: item.tracks.href
   }));
+
+  return {
+    nextUrl: lists.next,
+    playlists
+  };
 };
 
 const getPlaylist = async (id: string) => {
@@ -251,7 +256,7 @@ const getSavedSongs = async () => {
   return data;
 };
 
-const getNextSavedSongs = async (url: string) => {
+const getNext = async (url: string) => {
   const res = await fetchWithBearer(
     url,
     { method: 'GET' }
@@ -281,7 +286,7 @@ const spotify = {
   startPlaylist,
   playSong,
   getSavedSongs,
-  getNextSavedSongs
+  getNext
 };
 
 export default spotify;

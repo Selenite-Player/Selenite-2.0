@@ -175,7 +175,7 @@ ipcMain.on('get-saved-songs', async (event) => {
 });
 
 ipcMain.on('get-next-saved-songs', async (event, url) => {
-  const data = await spotify.getNextSavedSongs(url);
+  const data = await spotify.getNext(url);
   event.reply('next-saved-songs', data);
 });
 

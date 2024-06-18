@@ -1,5 +1,5 @@
 import './Playlists.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 const { ipcRenderer } = window.require('electron');
 
 type PlaylistInfo = {
@@ -60,17 +60,46 @@ const PlayListItem = ({playlist, context}: {playlist: PlaylistInfo, context: Pla
 
 const Playlists = ({playbackContext}:{playbackContext: PlaybackContext}) => {
   const [playlists, setPlaylists] = useState<PlaylistInfo[]>([]);
+  const [nextUrl, setNextUrl] = useState<string | null>(null);
+  const container = useRef<any>(null);
+
+  let lastScrollTop = 0;
 
   useEffect(() => {
     ipcRenderer.send('get-playlists');
-    ipcRenderer.on('update-playlists', (e, playlists) => {
+    ipcRenderer.on('update-playlists', (e, data) => {
+      const { nextUrl, playlists } = data;
       setPlaylists(playlists);
+      setNextUrl(nextUrl);
+    });
+    ipcRenderer.on('next-playlists', (e, data) => {
+      setPlaylists(playlists => {
+        return[...playlists, ...data.playlists]});
+      setNextUrl(data.nextUrl);
     });
   }, []);
 
+  const getMore = () => {
+    if(!nextUrl) return;
+
+    const scrollTop = container.current.scrollTop;
+
+    if(scrollTop < lastScrollTop) return;
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+    if(scrollTop + container.current.offsetHeight >= container.current.scrollHeight-1 ) {
+      ipcRenderer.send("get-next-playlists", nextUrl);
+    };
+  };
+
   return (
-    <div id="browse-content">
-      <div id="playlists">
+    <div 
+      id="browse-content" 
+      ref={container}
+      onScroll={getMore}
+    >
+      <div id="playlists" >
         {playlists.map(((playlist: PlaylistInfo) => 
           <PlayListItem key={playlist.id} playlist={playlist} context={playbackContext} />
         ))} 
