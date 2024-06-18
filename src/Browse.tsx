@@ -40,7 +40,7 @@ const Browse = () => {
   };
 
   const navOptions = [
-    "Playlists", "Liked Songs", "Podcasts"
+    "Playlists", "Liked Songs"
   ];
 
   return (
