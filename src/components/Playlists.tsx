@@ -20,7 +20,7 @@ type PlaybackContext = {
 const PlayListItem = ({playlist, context}: {playlist: PlaylistInfo, context: PlaybackContext}) => {
   if(!playlist) { return null };
 
-  const img = playlist.img[0];
+  const img = playlist.img ? playlist.img[0] : '';
 
   const startPlaylist = () => {
     ipcRenderer.send('start-playlist', playlist.uri);
@@ -76,7 +76,7 @@ const Playlists = ({playbackContext}:{playbackContext: PlaybackContext}) => {
         ))} 
       </div>
     </div>
-  )
+  );
 };
 
 export default Playlists;

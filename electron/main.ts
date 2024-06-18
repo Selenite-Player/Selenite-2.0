@@ -141,16 +141,16 @@ ipcMain.on('close-browse',() => {
 });
 
 ipcMain.on('open-details', async (e, id) => {
+  const data = await spotify.getPlaylist(id);
+
   if(detailsWindow){
-    const data = await spotify.getPlaylist(id);
     detailsWindow.webContents.send('update-details', data);
     return;
-  }
+  };
 
   createDetailsWindow();
 
   ipcMain.on('get-details', async (event) => {
-    const data = await spotify.getPlaylist(id);
     event.reply('update-details', data);
   });
 });

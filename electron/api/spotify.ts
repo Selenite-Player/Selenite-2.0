@@ -209,6 +209,7 @@ const getPlaylist = async (id: string) => {
   const list = await res.json();
 
   return ({
+    id: list.id,
     title: list.name,
     tracks: list.tracks.items,
     total: list.tracks.total,
