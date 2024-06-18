@@ -214,7 +214,8 @@ const getPlaylist = async (id: string) => {
     tracks: list.tracks.items,
     total: list.tracks.total,
     img: list.images,
-    uri: list.uri
+    uri: list.uri,
+    nextUri: list.tracks.next
   });
 };
 
