@@ -11,6 +11,10 @@
   outline: none;
 }
 
+.time-range:hover {
+  cursor: pointer;
+}
+
 .time-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
