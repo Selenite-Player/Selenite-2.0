@@ -19,7 +19,7 @@ const Browse = () => {
   const [playbackContext, setPlaybackContext] = useState({ trackUri: "", context: { type: "", uri: "" } });
 
   useEffect(() => {
-    ipcRenderer.on('update-context', (e, context) => {
+    ipcRenderer.on('new-playback-context', (e, context) => {
       setPlaybackContext(context);
     })
   },[]);
