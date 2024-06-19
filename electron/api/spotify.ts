@@ -16,13 +16,9 @@ const getUsername = async () => {
   );
 
   const data = await res!.json();
-
   const username = data.display_name;
 
-  settings.setSync({
-    ...settings.getSync(),
-    username: username
-  });
+  return username;
 };
 
 const getPlayback = async (): Promise<PlaybackData | void> => {

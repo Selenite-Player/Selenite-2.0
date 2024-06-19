@@ -1,16 +1,18 @@
 import './Tracklist.css'
-import { useEffect, useState } from 'react';
 const { ipcRenderer } = window.require('electron');
 
 const ListItem = ({track, pos, playbackContext}: any) => {
   const time = new Date(track.duration_ms);
   const seconds = time.getSeconds();
   const artists = track.artists.map((artist: any) => artist.name);
-  const { trackUri, context } = playbackContext;
+  const { trackUri } = playbackContext;
   const isPlaying = trackUri === track.uri;
 
   const playSong = () => {
-    ipcRenderer.send('play-song', { contextUri: context.uri, position: pos-1});
+    ipcRenderer.send('play-song', { 
+      contextUri: `spotify:user:${localStorage.getItem('user')}:collection`, 
+      position: pos-1
+    });
   };
 
   return (
@@ -34,15 +36,7 @@ const ListItem = ({track, pos, playbackContext}: any) => {
   )
 };
 
-const Tracklist = ({ tracks, context }: { tracks: any[], context: any }) => {
-  const [playbackContext, setPlaybackContext] = useState({ trackUri: "", context: { type: "", uri: "" }})
-
-  useEffect(() => {
-    ipcRenderer.on("new-playback-context", (e, data) => {
-      setPlaybackContext(data);
-    });
-  },[]);
-  
+const Tracklist = ({ tracks, context }: { tracks: any[], context: any }) => {  
   return (
     <div className="tracklist" >
       <div id="tracklist-header">
@@ -57,7 +51,7 @@ const Tracklist = ({ tracks, context }: { tracks: any[], context: any }) => {
             key={i} 
             track={item.track} 
             pos={i+1} 
-            playbackContext={playbackContext}
+            playbackContext={context}
           />
         )}
       </div>

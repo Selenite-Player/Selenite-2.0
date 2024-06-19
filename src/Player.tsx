@@ -19,6 +19,12 @@ const Player = () => {
     ipcRenderer.on("new-data", (e, data) => {
       dispatch({ type: 'update', playback: data });
     });
+
+    ipcRenderer.send("get-username");
+
+    ipcRenderer.on("username", (e, username) => {
+      localStorage.setItem("user", username);
+    })
   }, []); // eslint-disable-line
 
   useEffect(() => {
