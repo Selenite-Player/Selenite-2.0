@@ -48,7 +48,7 @@
   width: 100%;
   object-fit: cover;
   border-radius: 5px;
-  transition: .5s ease;
+  transition: .3s ease;
 }
 
 .playlist-item:hover img {
@@ -57,6 +57,10 @@
 
 .playlist-item:hover .img-container .fa.fa-play {
   opacity: 1;
+}
+
+.playlist-item:hover .img-container .fa.fa-play:hover {
+  font-size: 1.8em;
 }
 
 img.active {

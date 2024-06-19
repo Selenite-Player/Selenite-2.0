@@ -31,22 +31,20 @@ const PlayListItem = ({playlist, context}: {playlist: PlaylistInfo, context: Pla
   };
 
   return (
-    <div className="playlist-item" onClick={openDetails}>
+    <div className="playlist-item" >
       <div className="playlist-item-content">
         <div className="img-container">
           <img 
             src={img ? img.url : "../assets/pfp.png"} 
             alt="playlist cover" 
             className={playlist.uri === context.uri ? 'active' : ''}/>
-          <i 
-            className='fa fa-volume-up'
-          />
+          <i className='fa fa-volume-up' />
           <i 
             className='fa fa-play'
             onClick={startPlaylist}
           />
         </div>
-        <div className="details">
+        <div className="details" onClick={openDetails}>
           <div className='playlist-title'>{playlist.title}</div>
           <span className="flex-row">
             <p className="playlist-creator">{ playlist.owner ? "by " + playlist.owner : '' }</p>
