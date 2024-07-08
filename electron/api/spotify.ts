@@ -22,7 +22,10 @@ const getUsername = async () => {
 };
 
 const getPlayback = async (): Promise<PlaybackData | void> => {
-  const res: any = await fetchWithBearer("https://api.spotify.com/v1/me/player?additional_types=episode", { method: "GET" });
+  const res: any = await fetchWithBearer(
+    "https://api.spotify.com/v1/me/player?additional_types=episode",
+     { method: "GET" }
+    ).catch(error => console.log(error));
 
   if (res.status === 204) {
     /* console.log('Playback not available or inactive'); */

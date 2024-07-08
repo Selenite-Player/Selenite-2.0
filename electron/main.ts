@@ -107,7 +107,7 @@ app.on("before-quit", () => {
 mainWindowEvents();
 
 ipcMain.on('get-data', async (event) => {
-  let data = await spotify.getPlayback();
+  let data = await spotify.getPlayback().catch(err => console.log(err));
 
   /* if(data == null){
     await spotyAuth.getRefreshToken();
