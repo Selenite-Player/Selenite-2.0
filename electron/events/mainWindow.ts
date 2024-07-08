@@ -38,16 +38,6 @@ const mainWindowEvents = () => {
     await spotify.seek(timestamp);
   });
   
-  ipcMain.on("save-item", async (e, data: { playingType: string, id: string }) => {
-    const {playingType, id} = data;
-    await spotify.saveItem(playingType, id);
-  });
-  
-  ipcMain.on("remove-item", async (e, data: { playingType: string, id: string }) => {
-    const {playingType, id} = data;
-    await spotify.removeItem(playingType, id);
-  });
-  
   ipcMain.on("get-devices", async (event) => {
     const devices = await spotify.getDevices();
     const activeDevice = devices.find(device => device.is_active);

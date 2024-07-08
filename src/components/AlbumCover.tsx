@@ -7,8 +7,8 @@ const AlbumCover = (): JSX.Element => {
   const { img, isSaved, id, playingType } = useContext(PlaybackContext);
 
   const saveSong = () => {
-    const message = isSaved ? "remove-item" : "save-item";
-    ipcRenderer.send(message, { playingType, id });
+    const action = isSaved ? "remove" : "save";
+    ipcRenderer.send("change-save-status", { playingType, id, action });
   };
 
   return (

@@ -174,4 +174,15 @@ ipcMain.on('get-next-saved-songs', async (event, url) => {
   event.reply('next-saved-songs', data);
 });
 
+ipcMain.on("change-save-status", async (event, data: { playingType: string, id: string, action: string }) => {
+  const { playingType, id, action } = data;
+
+  action === "save"
+    ? await spotify.saveItem(playingType, id)
+    : await spotify.removeItem(playingType, id);
+  
+  const songs = await spotify.getSavedSongs();
+  browseWindow?.webContents.send('update-saved-songs', songs);
+});
+
 browseWindowEvents();
