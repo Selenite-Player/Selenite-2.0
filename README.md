@@ -62,12 +62,12 @@ You can play, pause, and skip tracks, as well as enable or disable shuffle and r
 ![HTML](https://img.shields.io/static/v1?message=HTML&logo=HTML5&logoColor=E34F26&label=%20&labelColor=595959&color=E34F26) 
 ![CSS](https://img.shields.io/static/v1?message=CSS&logo=CSS3&logoColor=1572B6&label=%20&labelColor=f2f2f2&color=1572B6) 
 
-### To Do List
+<!-- ### To Do List
 
-You can find the project board with known issues and planned features for the app [here](https://github.com/orgs/Selenite-Player/projects/2).
+You can find the project board with known issues and planned features for the app [here](https://github.com/orgs/Selenite-Player/projects/2). -->
 
 ### Bugs and Features
 
-- Found a **bug** or have a concrete **feature request**? Open a corresponding issue via the [Issues Tab](https://github.com/Selenite-Player/Selenite/issues).
+- Found a **bug** or have a concrete **feature request**? Open a corresponding issue via the [Issues Tab](https://github.com/Selenite-Player/Selenite-2.0/issues).
 
-- For any other **feedback**, **questions**, or **ideas**, please use the [Discussions Tab](https://github.com/Selenite-Player/Selenite/discussions) to reach out.
+- For any other **feedback**, **questions**, or **ideas**, please use the [Discussions Tab](https://github.com/Selenite-Player/Selenite-2.0/discussions) to reach out.
