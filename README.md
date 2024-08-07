@@ -19,11 +19,11 @@
 
 ## About the App
 
-Selenite is a cleaner, more minimalist alternative for navigating Spotify on MacOS. Control the song playback, add and remove items from your "liked songs" library and browse your playlists all within a compact interface.
+Selenite is a cleaner, more minimalist alternative for navigating Spotify on MacOS. Control the song playback, add and remove items from your "liked songs" library and browse your playlists, all within a compact interface.
 
 ### How it works
 
-Selenite makes use of [Spotify's Web API](https://developer.spotify.com/documentation/web-api/), this means the app runs alongside Spotify (whether you have Spotify running in your browser or any of the official apps). It won't replace the actual application you are listening with, but adds an extra interface to navigate the Spotify playback of whichever device or app you are using.
+Selenite makes use of [Spotify's Web API](https://developer.spotify.com/documentation/web-api/), this means the app runs alongside Spotify (whether you have Spotify running in your browser or any of the official apps). It won't replace the actual application you are listening with, but adds an extra interface to navigate the Spotify playback of whichever device or app you are using. To fully be able to access all functionality, you need a Spotify Premium account.
 
 ### Installation
 
