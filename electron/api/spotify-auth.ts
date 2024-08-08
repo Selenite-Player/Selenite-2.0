@@ -30,7 +30,7 @@ class SpotifyAuth {
     this.scope = scope;
     this.codeVerifier = this.generateCodeVerifier(64);
     this.codeChallenge = this.generateCodeChallenge(this.codeVerifier);
-    this.clientId = process.env.CLIENT_ID!;
+    this.clientId = settings.getSync("client_id") as string;  // process.env.CLIENT_ID!;
   };
 
   authenticate(window: BrowserWindow): void {
@@ -122,8 +122,12 @@ class SpotifyAuth {
       })
     };
 
-    const res = await fetch("https://accounts.spotify.com/api/token", payload)
-      .catch((err) => console.error(err));
+    const res = await fetch("https://accounts.spotify.com/api/token", payload);
+    const json = await res.json();
+
+    if (json.error === "invalid_client") {
+      throw new Error("invalid client");
+    };
 
     if(!res || res.status === 400) { return null };
 

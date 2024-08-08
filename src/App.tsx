@@ -11,6 +11,7 @@ import {
 import Player from './Player';
 import Browse from './Browse';
 import Details from "./Details";
+import ClientMenu from "./components/ClientMenu";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     path: "/index.html/details",
     element: <Details />,
   },
+  {
+    path: "/index.html/client",
+    element: <ClientMenu />,
+  }
 ]);
 
 function playbackReducer(playback: PlaybackData, action: any) {

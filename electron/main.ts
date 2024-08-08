@@ -10,6 +10,7 @@ settings.configure({ fileName: "selenite-settings.json", prettify: true });
 let mainWindow: BrowserWindow;
 let browseWindow: BrowserWindow | null;
 let detailsWindow: BrowserWindow | null;
+let clientMenuWindow: BrowserWindow | null;
 let spotyAuth: SpotifyAuth;
 
 function createMainWindow() {
@@ -80,17 +81,46 @@ function startApp(auth: SpotifyAuth) {
   setInterval(() => auth.getRefreshToken(), 60 * 59 * 1000);
 };
 
-app.whenReady().then(async () => {
-  spotyAuth = new SpotifyAuth();
-  let refreshToken = await spotyAuth.getRefreshToken();
+function openClientMenuWindow() {
+  if (clientMenuWindow) {
+    return;
+  }
 
-  if(!refreshToken) {
-    const authWindow = new BrowserWindow();
-    spotyAuth.authenticate(authWindow);
-    authWindow.on('close', async () => { startApp(spotyAuth); });
+  clientMenuWindow = new BrowserWindow({
+    width: 520,
+    height: 180,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+    resizable: true,
+  });
+
+  if (mainWindow) {
+    let pos = mainWindow.getPosition();
+    clientMenuWindow.setPosition(pos[0], pos[1]);
+  }
+
+  clientMenuWindow.loadURL('http://localhost:3000/index.html/client');
+  clientMenuWindow.on("close", () => (clientMenuWindow = null));
+};
+
+app.whenReady().then(async () => {
+  if (!settings.getSync("client_id")) {
+    console.log("no client_id");
+    openClientMenuWindow();
   } else {
-    startApp(spotyAuth);
-  };
+    spotyAuth = new SpotifyAuth();
+    let refreshToken = await spotyAuth.getRefreshToken();
+  
+    if(!refreshToken) {
+      const authWindow = new BrowserWindow();
+      spotyAuth.authenticate(authWindow);
+      authWindow.on('close', async () => { startApp(spotyAuth); });
+    } else {
+      startApp(spotyAuth);
+    };
+  }
 });
 
 app.on("window-all-closed", () => {
@@ -106,13 +136,35 @@ app.on("before-quit", () => {
 
 mainWindowEvents();
 
+ipcMain.on("add-client-id", async (event, id) => {
+  settings.setSync("client_id", id);
+
+  if (!mainWindow) {
+    spotyAuth = new SpotifyAuth();
+
+    try {
+      let refreshToken = await spotyAuth.getRefreshToken();
+
+      if(!refreshToken) {
+        const authWindow = new BrowserWindow();
+        spotyAuth.authenticate(authWindow);
+        authWindow.on('close', async () => { startApp(spotyAuth); });
+      } else {
+        startApp(spotyAuth);
+      };
+
+      clientMenuWindow!.close();
+    } catch (error) {
+      let err = error as Error;
+      if(err.message === "invalid client"){
+        clientMenuWindow!.webContents.send("client-error");
+      };
+    }
+  }
+});
+
 ipcMain.on('get-data', async (event) => {
   let data = await spotify.getPlayback().catch(err => console.log(err));
-
-  /* if(data == null){
-    await spotyAuth.getRefreshToken();
-    data = await spotify.getPlayback();
-  }; */
 
   if(data){
     event.reply('new-data', data);
