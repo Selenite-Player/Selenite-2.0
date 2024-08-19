@@ -56,7 +56,7 @@ You can play, pause, and skip tracks, as well as enable or disable shuffle and r
 ### Technologies Used
 
 ![Electron](https://img.shields.io/static/v1?message=Electron&logo=electron&logoColor=8fd3e0&label=%20&labelColor=595959&color=47848F) 
-![React](https://img.shields.io/static/v1?message=React&logo=react&logoColor=61DBFB&label=%20&labelColor=595959&color=61DBFB)  
+![React](https://img.shields.io/static/v1?message=React&logo=react&logoColor=61DBFB&label=%20&labelColor=595959&color=61DBFB)
 ![TypeScript](https://img.shields.io/static/v1?message=TypeScript&logo=typescript&logoColor=007acc&label=%20&labelColor=f2f2f2&color=007acc)
 ![Express](https://img.shields.io/static/v1?message=Express&logo=Express&logoColor=white&label=%20&labelColor=595959&color=white)
 ![Spotify](https://img.shields.io/static/v1?message=Spotify%20API&logo=Spotify&logoColor=1DB954&label=%20&labelColor=595959&color=1DB954)
