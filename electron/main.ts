@@ -25,7 +25,7 @@ function createMainWindow() {
     frame: false,
     title: "Selenite",
     hasShadow: false,
-    /* resizable: false, */
+    resizable: false,
   });
 
   if (settings.getSync("window-position")) {

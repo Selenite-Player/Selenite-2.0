@@ -25,13 +25,13 @@ Selenite is a cleaner, more minimalist alternative for navigating Spotify on Mac
 
 Selenite makes use of [Spotify's Web API](https://developer.spotify.com/documentation/web-api/), this means the app runs alongside Spotify (whether you have Spotify running in your browser or any of the official apps). It won't replace the actual application you are listening with, but adds an extra interface to navigate the Spotify playback of whichever device or app you are using. To fully be able to access all functionality, you need a Spotify Premium account.
 
-### Installation
+### Installation / Dev Setup
 
 1. Clone the [repository](https://github.com/Selenite-Player/Selenite).
 2. Install all dependencies via ```npm install```.
-3. Run ```npm run make``` to create an executable.
-4. Go through the [Spotify Setup](#spotify-setup) steps detailed in the next paragraph.
-5. Open the executable in the ```out/Selenite-darwin-x64``` folder to start the app.
+3. Go through the [Spotify setup](#spotify-setup) steps detailed in the next paragraph.
+4. Start the app with ```npm run start:app```.
+5. Enter your Spotify Client ID.
 
 ### Spotify Setup
 
@@ -39,7 +39,7 @@ To use this app, you will need to get a ```Client Id``` from Spotify and [add th
 
 1. Go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/).
 2. Click on "_Create an App_" and enter a name and description of your choice.
-3. You also need to provide a _redirect URI_. Per default, Selenite is set to use port 8888, so the URI will be ```http://localhost:8888/callback```. If you want to run the app on a different port, you can change the port in Selenite's settings and adjust the callback URI accordingly.
+3. You also need to provide a _redirect URI_. Per default, Selenite is set to use port 8888, so the URI will be ```http://localhost:8888/callback```.
 4. Once you save and the app is registered, you will be redirected to the app overview page. Here you will find your ```Client ID```. You will need it later to authenticate your Spotify account.
 
 ### Usage
@@ -56,11 +56,10 @@ You can play, pause, and skip tracks, as well as enable or disable shuffle and r
 ### Technologies Used
 
 ![Electron](https://img.shields.io/static/v1?message=Electron&logo=electron&logoColor=8fd3e0&label=%20&labelColor=595959&color=47848F) 
+![React](https://img.shields.io/static/v1?message=React&logo=react&logoColor=61DBFB&label=%20&labelColor=595959&color=61DBFB)  
 ![TypeScript](https://img.shields.io/static/v1?message=TypeScript&logo=typescript&logoColor=007acc&label=%20&labelColor=f2f2f2&color=007acc)
 ![Express](https://img.shields.io/static/v1?message=Express&logo=Express&logoColor=white&label=%20&labelColor=595959&color=white)
 ![Spotify](https://img.shields.io/static/v1?message=Spotify%20API&logo=Spotify&logoColor=1DB954&label=%20&labelColor=595959&color=1DB954)
-![HTML](https://img.shields.io/static/v1?message=HTML&logo=HTML5&logoColor=E34F26&label=%20&labelColor=595959&color=E34F26) 
-![CSS](https://img.shields.io/static/v1?message=CSS&logo=CSS3&logoColor=1572B6&label=%20&labelColor=f2f2f2&color=1572B6) 
 
 <!-- ### To Do List
 
