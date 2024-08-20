@@ -123,17 +123,15 @@ class SpotifyAuth {
     };
 
     const res = await fetch("https://accounts.spotify.com/api/token", payload);
-    const json = await res.json();
+    const data = await res.json();
 
-    if (json.error === "invalid_client") {
+    if (data.error === "invalid_client") {
       throw new Error("invalid client");
     };
 
     if(!res || res.status === 400) { return null };
 
     if(res.status === 200) {
-      const data = await res.json();
-  
       settings.setSync({
         ...settings.getSync(),
         token: {
