@@ -69,4 +69,4 @@ You can find the project board with known issues and planned features for the ap
 
 - Found a **bug** or have a concrete **feature request**? Open a corresponding issue via the [Issues Tab](https://github.com/Selenite-Player/Selenite-2.0/issues).
 
-- For any other **feedback**, **questions**, or **ideas**, please use the [Discussions Tab](https://github.com/Selenite-Player/Selenite-2.0/discussions) to reach out.
+- For any other **feedback**, **questions**, or **ideas**, please use the [Discussions Tab](https://github.com/orgs/Selenite-Player/discussions) to reach out.
