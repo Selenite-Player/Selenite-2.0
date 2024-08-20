@@ -47,7 +47,7 @@ To use this app, you will need to get a ```Client Id``` from Spotify and [add th
 Upon first launch, Selenite will ask for your [Spotify Client ID](#spotify-setup). Once you save your ID, the app will open a Spotify login page and ask for permission to view your account data (for login and authentication), your activity on Spotify (to retrieve playback information), and to take actions in Spotify on your behalf (to add or remove liked songs).  
 Selenite itself doesn't access any of your account data, it is only needed by Spotify during the sign-in and authentication process.
 
-Once you are succsfully logged in, you will be redirected back to the app. Open Spotify on a device of your choosing and start playing your music or podcasts. Selenite will pick up which device you are listening on and connect to it. Now you can minimize or let Spotify run in the background and navigate your playback via Selenite.
+Once you are successfully logged in, you will be redirected back to the app. Open Spotify on a device of your choosing and start playing your music or podcasts. Selenite will pick up which device you are listening on and connect to it. Now you can minimize or let Spotify run in the background and navigate your playback via Selenite.
 
 You can play, pause, and skip tracks, as well as enable or disable shuffle and repeat. You can also jump into the middle of a track using the progress bar. If you want to save or remove a song from your library, simply click the heart icon on the cover image. To open your playlists and liked songs library, click on the menu icon in the top right corner. You can either start a playlist directly by clicking on the cover image, or open the list of songs in another window by clicking on the playlist name.
 
